@@ -1,0 +1,64 @@
+.container {
+    width: 30%;
+    margin: 47.5px auto;
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: slategrey;
+}
+
+body {
+    background-image: url("https://www.definewireless.com/wp-content/uploads/2018/04/mma-background-9.jpg");
+}
+h1 {
+    text-align: center;
+}
+
+.logoBox{
+    position: absolute;
+}
+
+.logo {
+    max-width: 200px;
+    max-height: 300px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: crimson;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type="submit"]:hover {
+    background-color: brown;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
