@@ -1,3 +1,7 @@
+<?php
+require_once('config.php');
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,19 +14,33 @@
 <div>
     <?php
     if (isset($_POST["create"])) {
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $profession = $_POST['profession'];
+        // Generate unique user ID
+        $user_id = uniqid();
 
-        echo $firstname . " " . $lastname . " " . $email . " " . $password . " " . $profession;
+        $user_type = $_POST['profession'];
+        $email = $_POST['email'];
+        $first_name = $_POST['firstname'];
+        $last_name = $_POST['lastname'];
+        $password = $_POST['password'];
+
+        // create INSERT statement
+        $sql = "INSERT INTO user_t (user_id, user_type, email, first_name, last_name, password) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
+        if (!$stmt->execute([$user_id, $user_type, $email, $first_name, $last_name, $password])) {
+            echo "Error: " . $stmt->errorInfo()[2];
+            exit();
+        }
+
+        echo "New user created successfully with user ID: " . $user_id;
+
+        // close connection
+        $pdo = null;
     }
     ?>
 </div>
 
 <div class="logoBox">
-    <img class="logo" src="Images/2023-03-20%20(1).png" alt="test logo">
+    <img class="logo" src="images/2023-03-20%20(1).png" alt="test logo">
 </div>
 <div>
     <form action="registration.php" method="post">
@@ -60,7 +78,5 @@
         </div>
     </form>
 </div>
-
 </body>
 </html>
-
