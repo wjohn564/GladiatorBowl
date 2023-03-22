@@ -21,7 +21,7 @@ require_once('config.php');
         $email = $_POST['email'];
         $first_name = $_POST['firstname'];
         $last_name = $_POST['lastname'];
-        $password = $_POST['password'];
+        $password = sha1($_POST['password']);
 
         // create INSERT statement
         $sql = "INSERT INTO user_t (user_id, user_type, email, first_name, last_name, password) VALUES (?, ?, ?, ?, ?, ?)";
@@ -35,6 +35,8 @@ require_once('config.php');
 
         // close connection
         $pdo = null;
+        echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
+
     }
     ?>
 </div>
@@ -73,6 +75,7 @@ require_once('config.php');
                     <hr class="mb-2">
 
                     <input class="submit-button" type="submit" name="create" value="Create Account">
+                    <input class="login-button" type="button" value="Login" onclick="window.location.href='login.php'">
                 </div>
             </div>
         </div>
