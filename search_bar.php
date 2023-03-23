@@ -6,34 +6,33 @@
     <link rel="stylesheet" href="search_bar.css">
 </head>
 
+
+<?php
+if (isset($_POST['search']) and $_POST["value_to_search"] != "")
+{
+
+    $value_to_search = $_POST["value_to_search"];
+    //$query = "SELECT * FROM `user_t` WHERE (CONCAT('user_id', 'fisrt_name', 'last_name') LIKE '%".$value_to_search."%')";
+    //$query = "SELECT * FROM `user_t` WHERE strpos( CONCAT('user_id', 'fisrt_name', 'last_name'),'$value_to_search'";
+    $query = "SELECT * FROM `user_t` WHERE user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search'";
+    $search_result = filterTable($query);
+}
+else
+{
+    $query = "SELECT * FROM `user_t`";
+    $search_result = filterTable($query);
+}
+
+function filterTable($query)
+{
+    $connect = mysqli_connect("localhost", "id20430866_grp16login", "()^a12$1U1y3Fzqw","id20430866_gladiator_db");
+    $filter_result = mysqli_query($connect, $query);
+    return $filter_result;
+}
+
+?>
+
 <body>
-
-<div>
-    <?php
-    if (isset($_POST['search']) and $_POST["value_to_search"] != "")
-    {
-
-        $value_to_search = $_POST["value_to_search"];
-        //$query = "SELECT * FROM `user_t` WHERE (CONCAT('user_id', 'fisrt_name', 'last_name') LIKE '%".$value_to_search."%')";
-        //$query = "SELECT * FROM `user_t` WHERE strpos( CONCAT('user_id', 'fisrt_name', 'last_name'),'$value_to_search'";
-        $query = "SELECT * FROM `user_t` WHERE user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search'";
-        $search_result = filterTable($query);
-    }
-    else
-    {
-        $query = "SELECT * FROM `user_t`";
-        $search_result = filterTable($query);
-    }
-
-    function filterTable($query)
-    {
-        $connect = mysqli_connect("localhost", "id20430866_grp16login", "()^a12$1U1y3Fzqw","id20430866_gladiator_db");
-        $filter_result = mysqli_query($connect, $query);
-        return $filter_result;
-    }
-
-    ?>
-</div>
 
 <div>
     <form action="search_bar.php" method="post">
