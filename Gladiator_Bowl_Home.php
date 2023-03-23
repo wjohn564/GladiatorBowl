@@ -64,12 +64,30 @@ if (isset($_POST['search']) and $_POST["value_to_search"] != "")
     $value_to_search = $_POST["value_to_search"];
     //$query = "SELECT * FROM `user_t` WHERE (CONCAT('user_id', 'fisrt_name', 'last_name') LIKE '%".$value_to_search."%')";
     //$query = "SELECT * FROM `user_t` WHERE strpos( CONCAT('user_id', 'fisrt_name', 'last_name'),'$value_to_search'";
-    $query = "SELECT * FROM `user_t` WHERE user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search'";
+    switch ($_POST["job_filter"]) {
+        case "all":
+            $query = "SELECT * FROM `user_t` WHERE user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search'";
+            break;
+        case "fighter":
+            $query = "SELECT * FROM `user_t` WHERE ((user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search') AND user_type = 'fighter' )";
+            break;
+        default:
+            $query = "SELECT * FROM `user_t` WHERE ((user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search') AND user_type = 'manager' )";
+    }
     $search_result = filterTable($query);
 }
 else
 {
-    $query = "SELECT * FROM `user_t`";
+    switch ($_POST["job_filter"]) {
+        case "all":
+            $query = "SELECT * FROM `user_t`";
+            break;
+        case "fighter":
+            $query = "SELECT * FROM `user_t` WHERE user_type = 'fighter'";
+            break;
+        default:
+            $query = "SELECT * FROM `user_t` WHERE user_type = 'manager'";
+    }
     $search_result = filterTable($query);
 }
 
@@ -103,14 +121,33 @@ function filterTable($query)
 
 
     <div>
-        <form action="test.php" method="post">
+        <form action="Gladiator_Bowl_Home.php" method="post">
             <div class="container">
                 <div class="row">
                     <div class="col-5.5">
 
-                        <h2 class="col-5" style="color:#100d2b">Search for users:</h2>
+                        <h2 class="col-5" style="color:#100d2b">Search for users</h2>
+:
+                        <?php if (isset($_POST['value_to_search'])): ?>
+                            <input class="search-request" type="text" name="value_to_search" value="<?php echo $_POST['value_to_search']?>">
+                            <label for="job_type"><b>Job Filter:</b></label>
+                            <select class="form-control" id="job" name="job_filter">
+                                <option value="all" <?php if ($_POST['job_filter'] == 'all') echo Selected ?> >All</option>
+                                <option value="fighter" <?php if ($_POST['job_filter'] == 'fighter') echo Selected ?> >Fighter</option>
+                                <option value="manager" <?php if ($_POST['job_filter'] == 'manager') echo Selected ?> >Manager</option>
+                            </select>
+                        <?php else: ?>
+                            <input class="search-request" type="text" name="value_to_search">
+                            <label for="job_type"><b>Job Filter:</b></label>
+                            <select class="form-control" id="job" name="job_filter">
+                                <option value="all">All</option>
+                                <option value="fighter">Fighter</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        <?php endif; ?>
 
-                        <input class="search-request" type="text" name="value_to_search">
+
+
                         <input class="submit-button" type="submit" name="search" value="Enter">
                         <br><br><br>
 
@@ -121,6 +158,7 @@ function filterTable($query)
                                 <th>Id</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>User Type</th>
                             </tr>
 
                             <?php while ($row = mysqli_fetch_array($search_result)): ?>
@@ -128,6 +166,7 @@ function filterTable($query)
                                     <td> <?php echo $row["user_id"] ?></td>
                                     <td> <?php echo $row["first_name"] ?></td>
                                     <td> <?php echo $row["last_name"] ?></td>
+                                    <td> <?php echo $row["user_type"] ?></td>
                                 </tr>
                             <?php endwhile; ?>
 
