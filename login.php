@@ -1,5 +1,7 @@
 <?php
+session_start();
 require_once('config.php');
+
 ?>
 
 <head>
@@ -23,6 +25,7 @@ require_once('config.php');
         }
 
         $user = $stmt->fetch();
+        $_SESSION['user'] = $user;
         if ($user) {
             echo "Welcome " . $user['first_name'] . "!";
             echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('config.php');
 ?>
 
@@ -17,6 +18,7 @@ require_once('config.php');
         // Generate unique user ID
         $user_id = uniqid();
 
+
         $user_type = $_POST['profession'];
         $email = $_POST['email'];
         $first_name = $_POST['firstname'];
@@ -33,9 +35,27 @@ require_once('config.php');
 
         echo "New user created successfully with user ID: " . $user_id;
 
+        // For Session
+        $sql = "SELECT * FROM user_t WHERE email = ? AND password = ?";
+        $stmt = $pdo->prepare($sql);
+        if (!$stmt->execute([$email, $password])) {
+            echo "Error: " . $stmt->errorInfo()[2];
+            exit();
+        }
+        $user = $stmt->fetch();
+        $_SESSION['user'] = $user;
+
         // close connection
         $pdo = null;
-        echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
+
+        switch ($user_type) {
+            case "fighter":
+                echo "<script>window.location.href='registration_fighter.php';</script>";
+                break;
+            default:
+                echo "<script>window.location.href='registration_manager.php';</script>";
+        }
+
 
     }
     ?>
