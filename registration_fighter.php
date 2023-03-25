@@ -28,7 +28,7 @@ require_once('config.php');
         $medical_history = $_POST['medical_history'];
         $height = $_POST['height'];
         $weight = $_POST['weight'];
-        $win = $_POST['win'];
+        $wins = $_POST['wins'];
         $draws = $_POST['draws'];
         $loss = $_POST['loss'];
 
@@ -36,10 +36,10 @@ require_once('config.php');
 
         // create INSERT statement
         $sql = "INSERT INTO fighter_profile_t (user_id, age, gender, style_, profile_picture_link, description, medical_history,
-                               height, weight, win, draws, loss) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                               height, weight, wins, draws, loss) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         if (!$stmt->execute([$user_id, $age, $gender, $style_, $profile_picture_link, $description, $medical_history,
-            $height, $weight, $win, $draws, $loss])) {
+            $height, $weight, $wins, $draws, $loss])) {
             echo "Error: " . $stmt->errorInfo()[2];
             exit();
         }
@@ -94,14 +94,14 @@ require_once('config.php');
                     <label for="weight"><b>Weight</b></label>
                     <input class="form-control" type="number" name="weight">
 
-                    <label for="win"><b>Win</b></label>
-                    <input class="form-control" type="number" name="win">
+                    <label for="wins"><b>Wins</b></label>
+                    <input class="form-control" type="number" name="wins">
 
                     <label for="draws"><b>Draws</b></label>
                     <input class="form-control" type="number" name="draws">
 
                     <label for="loss"><b>Loss</b></label>
-                    <input class="form-control" type="number" name="loss">
+                    <input class="form-control" type="number" name="losses">
 
 
 
