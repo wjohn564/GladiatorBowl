@@ -70,7 +70,7 @@ require_once('config.php');
                     </select>
 
                     <label for="profile_picture_link"><b>Profile_picture_link</b></label>
-                    <input class="form-control" type="text" name="profile_picture_link">
+                    <input class="form-control" type="url" name="profile_picture_link">
 
                     <hr class="mb-2">
 

@@ -147,9 +147,9 @@ else
                 <h4 style="color: #999999;"> <?php echo $user_profile['description'] ?></h4>
                 <br>
                 <?php if ($user['user_type'] == "fighter"): ?>
-                    <h3 style="color: white;"> <?php echo "wins :" . $user_profile['wins'] ?> </h3>
-                    <h3 style="color: white;"> <?php echo "draws :" . $user_profile['draws'] ?> </h3>
-                    <h3 style="color: white;"> <?php echo "losses :" . $user_profile['losses'] ?> </h3>
+                    <h3 style="color: white;"> <?php echo "wins : " . $user_profile['wins'] ?> </h3>
+                    <h3 style="color: white;"> <?php echo "draws : " . $user_profile['draws'] ?> </h3>
+                    <h3 style="color: white;"> <?php echo "losses : " . $user_profile['losses'] ?> </h3>
                 <?php endif; ?>
 
             </div>

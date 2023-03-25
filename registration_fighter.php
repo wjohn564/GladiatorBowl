@@ -22,24 +22,26 @@ require_once('config.php');
 
         $age = $_POST['age'];
         $gender = $_POST['gender'];
-        $style_ = $_POST['style_'];
+        $fighting_style = $_POST['fighting_style'];
         $profile_picture_link = $_POST['profile_picture_link'];
+        $fight_videos = $_POST['fight_videos'];
         $description = $_POST['description'];
         $medical_history = $_POST['medical_history'];
         $height = $_POST['height'];
         $weight = $_POST['weight'];
         $wins = $_POST['wins'];
         $draws = $_POST['draws'];
-        $loss = $_POST['loss'];
+        $losses = $_POST['losses'];
 
 
 
         // create INSERT statement
-        $sql = "INSERT INTO fighter_profile_t (user_id, age, gender, style_, profile_picture_link, description, medical_history,
-                               height, weight, wins, draws, loss) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO fighter_profile_t (user_id, age, gender, fighting_style, profile_picture_link, fight_videos, description, medical_history,
+                               height, weight, wins, draws, losses) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        if (!$stmt->execute([$user_id, $age, $gender, $style_, $profile_picture_link, $description, $medical_history,
-            $height, $weight, $wins, $draws, $loss])) {
+
+        if (!$stmt->execute([$user_id, $age, $gender, $fighting_style, $profile_picture_link, $fight_videos, $description, $medical_history,
+            $height, $weight, $wins, $draws, $losses])) {
             echo "Error: " . $stmt->errorInfo()[2];
             exit();
         }
@@ -58,7 +60,7 @@ require_once('config.php');
     <img class="logo" src="images/2023-03-20%20(1).png" alt="test logo">
 </div>
 <div>
-    <form action="registration_manager.php" method="post">
+    <form action="registration_fighter.php" method="post">
         <div class="container">
             <div class="row">
                 <div class="col-5.5">
@@ -72,15 +74,22 @@ require_once('config.php');
 
                     <label for="gender"><b>Gender:</b></label>
                     <select class="form-control" id="gender" name="gender" required>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
                     </select>
 
-                    <label for="style_"><b>Style</b></label>
-                    <input class="form-control" type="text" name="style_" required>
+                    <label for="fighting_style"><b>Fighting style</b></label>
+                    <select class="form-control" id="fighting_style" name="fighting_style" required>
+                        <option value="Striker">Striker</option>
+                        <option value="Wrestler">Wrestler</option>
+                    </select>
 
                     <label for="profile_picture_link"><b>Profile_picture_link</b></label>
-                    <input class="form-control" type="text" name="profile_picture_link">
+                    <input class="form-control" type="url" name="profile_picture_link">
+
+                    <label for="fight_videos"><b>Fight video link</b></label>
+                    <input class="form-control" type="url" name="fight_videos">
 
                     <label for="description"><b>Description</b></label>
                     <input class="form-control" type="text" name="description">
@@ -89,21 +98,19 @@ require_once('config.php');
                     <input class="form-control" type="text" name="medical_history">
 
                     <label for="height"><b>Height</b></label>
-                    <input class="form-control" type="number" name="height">
+                    <input class="form-control" type="number" name="height" required>
 
                     <label for="weight"><b>Weight</b></label>
-                    <input class="form-control" type="number" name="weight">
+                    <input class="form-control" type="number" name="weight" required>
 
                     <label for="wins"><b>Wins</b></label>
-                    <input class="form-control" type="number" name="wins">
+                    <input class="form-control" type="number" name="wins" required>
 
                     <label for="draws"><b>Draws</b></label>
-                    <input class="form-control" type="number" name="draws">
+                    <input class="form-control" type="number" name="draws" required>
 
-                    <label for="loss"><b>Loss</b></label>
-                    <input class="form-control" type="number" name="losses">
-
-
+                    <label for="losses"><b>Losses</b></label>
+                    <input class="form-control" type="number" name="losses" required>
 
                     <hr class="mb-2">
 
