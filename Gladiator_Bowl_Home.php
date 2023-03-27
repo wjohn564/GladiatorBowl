@@ -1,21 +1,8 @@
-<?php // Profile
+<?php // Var
 session_start();
 require_once "config.php";
 $user = $_SESSION['user'];
-
-
-$user_to_search = $user["user_id"];
-
-switch ($user["user_type"]) {
-    case "fighter":
-        $query = "SELECT * FROM `fighter_profile_t` WHERE user_id = '$user_to_search'";
-        break;
-    default:
-        $query = "SELECT * FROM `manager_profile_t` WHERE user_id = '$user_to_search'";
-}
-$search_result = filterTable($query);
-$user_profile = mysqli_fetch_array($search_result);
-
+$user_profile = $_SESSION['user_profile'];
 ?>
 
 <?php // Search
@@ -193,7 +180,7 @@ else
                                     <th>User Type</th>
                                 </tr>
 
-                                <?php while ($row = mysqli_fetch_array($search_result)): ?>
+                                <?php $size = 15; while ($row = mysqli_fetch_array($search_result) and $size > 0 ): $size--;?>
                                     <tr>
                                         <td> <?php echo $row["user_id"] ?></td>
                                         <td> <?php echo $row["first_name"] ?></td>

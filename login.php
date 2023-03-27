@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('config.php');
-
+unset($_SESSION['user_profile']);
 ?>
 
 <head>
@@ -16,6 +16,8 @@ require_once('config.php');
     if (isset($_POST["login"])) {
         $email = $_POST['email'];
         $password = sha1($_POST['password']);
+
+
         // create SELECT statement
         $sql = "SELECT * FROM user_t WHERE email = ? AND password = ?";
         $stmt = $pdo->prepare($sql);
@@ -29,6 +31,22 @@ require_once('config.php');
         if ($user) {
             echo "Welcome " . $user['first_name'] . "!";
             echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
+
+
+            // put in session user_profile ( may have issue because of the few first profile create without profile )
+            $user_to_search = $user["user_id"];
+            switch ($user["user_type"]) {
+                case "fighter":
+                    $query = "SELECT * FROM `fighter_profile_t` WHERE user_id = '$user_to_search'";
+                    break;
+                default:
+                    $query = "SELECT * FROM `manager_profile_t` WHERE user_id = '$user_to_search'";
+            }
+            $search_result = filterTable($query);
+            $user_profile = mysqli_fetch_array($search_result);
+            $_SESSION['user_profile'] = $user_profile;
+
+
         } else {
             echo "Invalid email or password.";
         }

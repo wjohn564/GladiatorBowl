@@ -80,6 +80,7 @@ select {
     height: auto;
     border-radius: 20%;
     background-size: contain;
+    border: 1px solid white;
 }
 
 .main_color {

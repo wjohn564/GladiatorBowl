@@ -50,10 +50,10 @@ require_once('config.php');
 
         switch ($user_type) {
             case "fighter":
-                echo "<script>window.location.href='registration_fighter.php';</script>";
+                echo "<script>window.location.href='profile_fighter.php';</script>";
                 break;
             default:
-                echo "<script>window.location.href='registration_manager.php';</script>";
+                echo "<script>window.location.href='profile_manager.php';</script>";
         }
 
 
