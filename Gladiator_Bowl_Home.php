@@ -122,8 +122,10 @@ else
 
 
         <div>
-            <div class="container2 Profile col-6">
+            <div class="container2 Profile">
+                <a style="float: right;" href="<?php if ($user['user_type'] == "fighter") echo 'profile_fighter.php'; else echo 'profile_manager.php';?>">Edit profile</a>
 
+                <br>
                 <img class="profile_picture" src="<?php echo $user_profile['profile_picture_link']?>"
                      onerror="this.onerror=null; this.src='https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';">
                 <br><br>
