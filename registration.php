@@ -23,39 +23,55 @@ require_once('config.php');
         $email = $_POST['email'];
         $first_name = $_POST['firstname'];
         $last_name = $_POST['lastname'];
-        $password = sha1($_POST['password']);
+        $password = ($_POST['password']);
+        $re_password = ($_POST['password2']);
 
-        // create INSERT statement
-        $sql = "INSERT INTO user_t (user_id, user_type, email, first_name, last_name, password) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $pdo->prepare($sql);
-        if (!$stmt->execute([$user_id, $user_type, $email, $first_name, $last_name, $password])) {
-            echo "Error: " . $stmt->errorInfo()[2];
-            exit();
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number = preg_match('@[0-9]@', $password);
+        $specialChars = preg_match('@[^\w]@', $password);
+        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8 || strlen($password) > 50) {
+            echo 'Password should be at least 8 - 50 characters in length and 
+    should include at least one upper case letter, one number, and one special character.';
+        } else {
+            if ($re_password == $password) {
+                $re_password = null;
+                $encrypted_password = sha1($password);
+
+                // create INSERT statement
+                $sql = "INSERT INTO user_t (user_id, user_type, email, first_name, last_name, password) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $pdo->prepare($sql);
+                if (!$stmt->execute([$user_id, $user_type, $email, $first_name, $last_name, $encrypted_password])) {
+                    echo "Error: " . $stmt->errorInfo()[2];
+                    exit();
+                }
+
+                echo "New user created successfully with user ID: " . $user_id;
+
+                // For Session
+                $sql = "SELECT * FROM user_t WHERE email = ? AND password = ?";
+                $stmt = $pdo->prepare($sql);
+                if (!$stmt->execute([$email, $password])) {
+                    echo "Error: " . $stmt->errorInfo()[2];
+                    exit();
+                }
+                $user = $stmt->fetch();
+                $_SESSION['user'] = $user;
+
+                // close connection
+                $pdo = null;
+
+                switch ($user_type) {
+                    case "fighter":
+                        echo "<script>window.location.href='profile_fighter.php';</script>";
+                        break;
+                    default:
+                        echo "<script>window.location.href='profile_manager.php';</script>";
+                }
+            } else {
+                echo "Passwords do not match!";
+            }
         }
-
-        echo "New user created successfully with user ID: " . $user_id;
-
-        // For Session
-        $sql = "SELECT * FROM user_t WHERE email = ? AND password = ?";
-        $stmt = $pdo->prepare($sql);
-        if (!$stmt->execute([$email, $password])) {
-            echo "Error: " . $stmt->errorInfo()[2];
-            exit();
-        }
-        $user = $stmt->fetch();
-        $_SESSION['user'] = $user;
-
-        // close connection
-        $pdo = null;
-
-        switch ($user_type) {
-            case "fighter":
-                echo "<script>window.location.href='profile_fighter.php';</script>";
-                break;
-            default:
-                echo "<script>window.location.href='profile_manager.php';</script>";
-        }
-
 
     }
     ?>
@@ -85,6 +101,9 @@ require_once('config.php');
 
                     <label for="password"><b>Password</b></label>
                     <input class="form-control" type="password" name="password" required>
+
+                    <label for="re_password"><b>Re-Enter Password</b></label>
+                    <input class="form-control" type="password" name="password2" required>
 
                     <label for="profession"><b>Profession:</b></label>
                     <select class="form-control" id="profession" name="profession" required>
