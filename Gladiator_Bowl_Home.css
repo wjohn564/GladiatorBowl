@@ -93,3 +93,11 @@ select {
     top: 40px;
     left: 40px;
 }
+
+.tr {
+    transition: all 0.3s;
+}
+.tr:hover {
+    color: #fcad36;
+    scale: 1.15;
+}

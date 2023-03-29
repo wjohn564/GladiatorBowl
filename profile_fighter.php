@@ -122,19 +122,19 @@ require_once('config.php');
                     <input class="form-control" type="text" name="medical_history" value="<?php echo $user_profile['medical_history']?>">
 
                     <label for="height"><b>Height</b></label>
-                    <input class="form-control" type="number" name="height" value="<?php echo $user_profile['height']?>" required>
+                    <input class="form-control" type="number" name="height" value="<?php echo $user_profile['height']?>">
 
                     <label for="weight"><b>Weight</b></label>
-                    <input class="form-control" type="number" name="weight" value="<?php echo $user_profile['weight']?>" required>
+                    <input class="form-control" type="number" name="weight" value="<?php echo $user_profile['weight']?>">
 
                     <label for="wins"><b>Wins</b></label>
-                    <input class="form-control" type="number" name="wins" value="<?php echo $user_profile['wins']?>" required>
+                    <input class="form-control" type="number" name="wins" value="<?php echo $user_profile['wins']?>">
 
                     <label for="draws"><b>Draws</b></label>
-                    <input class="form-control" type="number" name="draws" value="<?php echo $user_profile['draws']?>" required>
+                    <input class="form-control" type="number" name="draws" value="<?php echo $user_profile['draws']?>">
 
                     <label for="losses"><b>Losses</b></label>
-                    <input class="form-control" type="number" name="losses" value="<?php echo $user_profile['losses']?>" required>
+                    <input class="form-control" type="number" name="losses" value="<?php echo $user_profile['losses']?>">
 
                     <hr class="mb-2">
 
