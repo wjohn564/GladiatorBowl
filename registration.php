@@ -65,8 +65,11 @@ require_once('config.php');
                     case "fighter":
                         echo "<script>window.location.href='profile_fighter.php';</script>";
                         break;
-                    default:
+                    case "manager":
                         echo "<script>window.location.href='profile_manager.php';</script>";
+                        break;
+                    default:
+                        echo "<script>window.location.href='admin.php';</script>";
                 }
             } else {
                 echo "Passwords do not match!";
@@ -109,6 +112,7 @@ require_once('config.php');
                     <select class="form-control" id="profession" name="profession" required>
                         <option value="fighter">Fighter</option>
                         <option value="manager">Manager</option>
+                        <option value="admin">Admin (test)</option>
                     </select>
 
                     <hr class="mb-2">

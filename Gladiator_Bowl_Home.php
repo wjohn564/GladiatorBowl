@@ -189,7 +189,7 @@ else
                             <?php $size = 15; while ($row = mysqli_fetch_array($search_result) and $size > 0 ): $size--;?>
 
                                 <tr id="<?php echo $row["user_id"];?>" onclick="
-                                document.cookie = 'id=' + this.id; <?php fi_(); ?>; fi();">
+                                         <?php $user_search["first_name"] = '<script>this.id</script>';  fi_('<script>this.id</script>'); ?>; fi();">
                                     <td> <?php echo $row["user_id"] ?></td>
                                     <td> <?php echo $row["first_name"] ?></td>
                                     <td> <?php echo $row["last_name"] ?></td>
@@ -221,8 +221,8 @@ else
 
 <?php
 
-function fi_() {
-    $id = $_COOKIE['id'];
+function fi_($id) {
+
     $sql = "SELECT * FROM user_t WHERE user_id = '$id'";
 
     $search_result = filterTable($sql);
@@ -246,6 +246,8 @@ function fi_() {
 }
 ?>
 <script>
+
+
     function fi() {
         const search_show_profile = document.querySelector('#search_show_profile');
         if (search_show_profile.style.display === 'block')
