@@ -1,0 +1,33 @@
+
+.container {
+    width: 35%;
+    margin: 0 auto;
+    margin-top: 20%;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    background-color: dimgrey;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+body {
+    background-image: url("https://www.definewireless.com/wp-content/uploads/2018/04/mma-background-9.jpg");
+}
+
+.logout-button {
+    background-color: transparent;
+    border: none;
+    color: #999;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-left: -15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    float: left;
+}
+

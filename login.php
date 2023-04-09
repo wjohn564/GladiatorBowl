@@ -26,12 +26,16 @@ unset($_SESSION['user_profile']);
             exit();
         }
 
+
         $user = $stmt->fetch();
         $_SESSION['user'] = $user;
         if ($user) {
-            echo "Welcome " . $user['first_name'] . "!";
-            echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
 
+            if ($email == 'admin@access.com') {
+                echo "<script>window.location.href='admin.php';</script>";
+            } else {
+                echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
+            }
 
             // put in session user_profile ( may have issue because of the few first profile create without profile )
             $user_to_search = $user["user_id"];
@@ -48,8 +52,10 @@ unset($_SESSION['user_profile']);
 
 
         } else {
+
             echo "Invalid email or password.";
         }
+
 
         // close connection
         $pdo = null;
@@ -87,4 +93,3 @@ unset($_SESSION['user_profile']);
 </div>
 </body>
 </html>
-
