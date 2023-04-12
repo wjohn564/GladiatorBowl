@@ -63,10 +63,10 @@ require_once('config.php');
 
                 switch ($user_type) {
                     case "fighter":
-                        echo "<script>window.location.href='profile_fighter.php';</script>";
+                        echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
                         break;
                     case "manager":
-                        echo "<script>window.location.href='profile_manager.php';</script>";
+                        echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
                         break;
                     default:
                         echo "<script>window.location.href='admin.php';</script>";

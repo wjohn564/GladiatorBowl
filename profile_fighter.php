@@ -21,6 +21,7 @@ require_once('config.php');
         // Take previous user ID
         $user = $_SESSION['user'];
         $user_id = $user["user_id"];
+        $email = $user["email"];
 
         $age = $_POST['age'];
         $gender = $_POST['gender'];
@@ -40,7 +41,7 @@ require_once('config.php');
 
             $sql = "UPDATE fighter_profile_t SET age=?, gender=?, fighting_style=?, profile_picture_link=?,
                              fight_videos=?, description=?, medical_history=?,
-                             height=?, weight=?, wins=?, draws=?, losses=? WHERE user_id='$user_id'";
+                             height=?, weight=?, wins=?, draws=?, losses=? WHERE email='$email'";
             $stmt = $pdo->prepare($sql);
 
             if (!$stmt->execute([$age, $gender, $fighting_style, $profile_picture_link, $fight_videos, $description, $medical_history,
@@ -52,25 +53,25 @@ require_once('config.php');
         else {
 
             // create INSERT statement
-            $sql = "INSERT INTO fighter_profile_t (user_id, age, gender, fighting_style, profile_picture_link, fight_videos, description, medical_history,
-                               height, weight, wins, draws, losses) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO fighter_profile_t (email, user_id, age, gender, fighting_style, profile_picture_link, fight_videos, description, medical_history,
+                               height, weight, wins, draws, losses) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
 
-            if (!$stmt->execute([$user_id, $age, $gender, $fighting_style, $profile_picture_link, $fight_videos, $description, $medical_history,
+            if (!$stmt->execute([$email, $user_id, $age, $gender, $fighting_style, $profile_picture_link, $fight_videos, $description, $medical_history,
                 $height, $weight, $wins, $draws, $losses])) {
                 echo "Error: " . $stmt->errorInfo()[2];
                 exit();
             }
         }
 
-        $query = "SELECT * FROM `fighter_profile_t` WHERE user_id = '$user_id'";
+        $query = "SELECT * FROM `fighter_profile_t` WHERE email = '$email'";
         $search_result = filterTable($query);
         $user_profile = mysqli_fetch_array($search_result);
         $_SESSION['user_profile'] = $user_profile;
 
 
 
-        echo "New fighter created successfully with user ID: " . $user_id;
+        echo "New fighter created successfully with email: " . $email;
 
         // close connection
         $pdo = null;

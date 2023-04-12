@@ -21,6 +21,7 @@ require_once('config.php');
         // Take previous user ID
         $user = $_SESSION['user'];
         $user_id = $user["user_id"];
+        $email = $user["email"];
 
         $age = $_POST['age'];
         $description = $_POST['description'];
@@ -40,9 +41,9 @@ require_once('config.php');
         else {
 
             // create INSERT statement
-            $sql = "INSERT INTO manager_profile_t (user_id, age, description, gender, profile_picture_link) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO manager_profile_t (email, user_id, age, description, gender, profile_picture_link) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
-            if (!$stmt->execute([$user_id, $age, $description, $gender, $profile_picture_link])) {
+            if (!$stmt->execute([$email, $user_id, $age, $description, $gender, $profile_picture_link])) {
                 echo "Error: " . $stmt->errorInfo()[2];
                 exit();
             }
@@ -55,7 +56,7 @@ require_once('config.php');
 
 
 
-        echo "New manager created successfully with user ID: " . $user_id;
+        echo "New manager created successfully with email: " . $email;
 
         // close connection
         $pdo = null;

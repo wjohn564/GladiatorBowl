@@ -112,6 +112,7 @@ else
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="Gladiator_Bowl_Home.css">
+    <script type="text/javascript" scr="js/jq"> </script>
 
 </head>
 
@@ -188,8 +189,7 @@ else
                             </tr>
                             <?php $size = 15; while ($row = mysqli_fetch_array($search_result) and $size > 0 ): $size--;?>
 
-                                <tr id="<?php echo $row["user_id"];?>" onclick="
-                                         <?php $user_search["first_name"] = '<script>this.id</script>';  fi_('<script>this.id</script>'); ?>; fi();">
+                                <tr id="<?php echo $row["user_id"];?>" onclick="transfer_id();<?php $user_search['first_name'] = $_POST['id'];  fi_($_POST['id']); ?>; fi();">
                                     <td> <?php echo $row["user_id"] ?></td>
                                     <td> <?php echo $row["first_name"] ?></td>
                                     <td> <?php echo $row["last_name"] ?></td>
@@ -247,6 +247,14 @@ function fi_($id) {
 ?>
 <script>
 
+    function transfer_id() {
+        var a = {}
+        a.id = '641ef1100d51f';
+        
+        $.ajax({
+            url: "Gladiator_Bowl_Home.php",method: "post", data: a, success:function() {};
+        })
+    }
 
     function fi() {
         const search_show_profile = document.querySelector('#search_show_profile');
