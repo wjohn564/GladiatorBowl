@@ -67,6 +67,19 @@ select {
     background-color: brown;
 }
 
+.based-button {
+    background-color: #100d2b;
+    padding: 12px 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+.based-button:hover {
+    background-color: #05042c;
+}
+
 .error {
     color: red;
 }

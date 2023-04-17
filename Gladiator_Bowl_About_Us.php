@@ -2,85 +2,10 @@
 <html>
 <head>
 	<title>Gladiator Bowl - About Us</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			font-family: Arial, sans-serif;
-		}
-		#banner {
-			background-color: #100d2c;
-			color: white;
-			height: 100px;
-			display: flex;
-			align-items: center;
-			padding: 0 20px;
-		}
-		#logo img {
-			height: 60px;
-			width: auto;
-		}
-		#links {
-			flex: 1;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-left: 80px;
-			margin-right: 80px;
-		}
-		#links a {
-			color: white;
-			text-decoration: none;
-		}
-		#links a:hover {
-			color: #fcad36;
-		}
-		#main {
-			text-align: justify;
-			padding: 20px 0;
-			max-width: 800px;
-			padding-left: 20px;
-		}
-		h1 {
-			font-size: 36px;
-			color: #100d2c;
-			margin-bottom: 40px;
-		}
-		h2 {
-			font-size: 24px;
-			color: #100d2c;
-			margin-bottom: 20px;
-		}
-		p {
-			font-size: 18px;
-			line-height: 1.5;
-			margin-bottom: 20px;
-		}
-		ul {
-			list-style-type: disc;
-			margin-left: 20px;
-			margin-bottom: 20px;
-		}
-		li {
-			margin-bottom: 5px;
-		}
-	</style>
+
 </head>
 <body>
-	<div id="banner">
-		<div id="logo">
-			<img src="images/Gladiator_Bowl_Home_Banner_Logo_Ver2.jpg" alt="Gladiator Bowl Logo">
-		</div>
-		<div id="links">
-			<a href="Gladiator_Bowl_Home.php">Home</a>
-			<a href="#">Find a Job</a>
-			<a href="#">Post a Job</a>
-			<a href="Gladiator_Bowl_About_Us.php">About Us</a>
-			<a href="Gladiator_Bowl_Contact_Us.php">Contact Us</a>
-			<a href="login.php">Log In</a>
-			<a href="registration.php">Sign Up</a>
-		</div>
-	</div>
+	<?php require "banner.php"; ?>
 	<div id="main">
 		<h1>About Us</h1>
 		<h2>Who are we?</h2>

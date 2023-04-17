@@ -48,89 +48,22 @@ else
 
 
 
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Gladiator Bowl - Home</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        #banner {
-            background-color: #100d2c;
-            color: white;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            justify-content: space-between;
-        }
-        #logo img {
-            height: 60px;
-            width: auto;
-        }
-        #links {
-            display: flex;
-            flex: 1;
-            justify-content: space-between;
-            margin-left: 80px;
-            margin-right: 80px;
-        }
-        #links a {
-            color: white;
-            text-decoration: none;
-
-            transition: all 0.3s;
-        }
-        #links a:hover {
-            color: #fcad36;
-            scale: 1.15;
-        }
-
-        #main {
-            text-align: center;
-            padding: 50px 0;
-        }
-        #main h1 {
-            font-size: 36px;
-            color: black;
-            margin: 0 0 40px 0;
-        }
-        #main h4 {
-            font-size: 20px;
-            color: black;
-            margin: 0;
-        }
-
-        .search_show_profile {
-            display: none;
-        }
-
-    </style>
-
+    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="Gladiator_Bowl_Home.css">
+    
     <script type="text/javascript" scr="js/jq"> </script>
 
 </head>
 
 <body>
-<div id="banner">
-    <div id="logo">
-        <img src="images/Gladiator_Bowl_Home_Banner_Logo_Ver2.jpg" alt="Gladiator Bowl Logo">
-    </div>
-    <div id="links">
-        <a href="Gladiator_Bowl_Home.php">Home</a>
-        <a href="#">Find a Job</a>
-        <a href="#">Post a Job</a>
-        <a href="Gladiator_Bowl_About_Us.php">About Us</a>
-        <a href="Gladiator_Bowl_Contact_Us.php">Contact Us</a>
-        <a href="login.php">Log In</a>
-        <a href="registration.php">Sign Up</a>
-    </div>
-</div>
+    <?php require "banner.php"; ?>
+
 <div id="main">
     <h1 style="color: #100d2b">Join the Ultimate Fighting Network</h1>
     <h4 style="color: #100d2b">Connect with other MMA fighters from around the world, showcase your skills, and grow your career.</h4>
@@ -159,9 +92,9 @@ else
                             <input class="search-request" type="text" name="value_to_search" value="<?php echo $_POST['value_to_search']?>">
                             <label for="job_type"><b>Job Filter:</b></label>
                             <select class="form-control" id="job" name="job_filter">
-                                <option value="all" <?php if ($_POST['job_filter'] == 'all') echo Selected ?> >All</option>
-                                <option value="fighter" <?php if ($_POST['job_filter'] == 'fighter') echo Selected ?> >Fighter</option>
-                                <option value="manager" <?php if ($_POST['job_filter'] == 'manager') echo Selected ?> >Manager</option>
+                                <option value="all" <?php if ($_POST['job_filter'] == 'all') echo 'Selected' ?> >All</option>
+                                <option value="fighter" <?php if ($_POST['job_filter'] == 'fighter') echo 'Selected' ?> >Fighter</option>
+                                <option value="manager" <?php if ($_POST['job_filter'] == 'manager') echo 'Selected' ?> >Manager</option>
                             </select>
                         <?php else: ?>
                             <input class="search-request" type="text" name="value_to_search">
@@ -186,14 +119,17 @@ else
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>User Type</th>
+                                <th>Interaction <?php echo $_GET['arg'] ?></th>
                             </tr>
                             <?php $size = 15; while ($row = mysqli_fetch_array($search_result) and $size > 0 ): $size--;?>
 
-                                <tr id="<?php echo $row["user_id"];?>" onclick="transfer_id();<?php $user_search['first_name'] = $_POST['id'];  fi_($_POST['id']); ?>; fi();">
+                                <tr>
                                     <td> <?php echo $row["user_id"] ?></td>
                                     <td> <?php echo $row["first_name"] ?></td>
                                     <td> <?php echo $row["last_name"] ?></td>
                                     <td> <?php echo $row["user_type"] ?></td>
+
+                                    <td> <input class="submit-button"  type="submit" id="<?php echo $row["user_id"];?>;" onclick="transfer_id() ;<?php fi_($_GET['arg']) ?> ; show_profile();"  value="View profile" > </td>
                                 </tr>
                             <?php endwhile; ?>
 
@@ -216,6 +152,43 @@ else
 </div>
 </body>
 
+<script>
+
+    function show_profile() {
+        const search_show_profile = document.querySelector('#search_show_profile');
+        if (search_show_profile.style.display === 'block')
+            search_show_profile.style.display = 'none';
+        else
+            search_show_profile.style.display = 'block';
+    }
+
+
+    function transfer_id() {
+        var xhttp;
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+            document.getElementById("txtHint").innerHTML = xhttp.responseText;
+            }
+        };
+        const str1 = "'641ef1100d51f'"
+        const str = "Gladiator_Bowl_Home.php?arg=".concat(str1);
+        xhttp.open("GET", str , true);
+        xhttp.send();   
+    }
+
+    /*
+    function transfer_id() {
+        var a = {}
+        a.id = '641ef1100d51f';
+
+        $.ajax({
+            url: "Gladiator_Bowl_Home.php",method: "get", data: a, success:function() {};
+        })
+    } */
+
+    
+</script>
 
 
 
@@ -240,30 +213,11 @@ function fi_($id) {
     $search_result = filterTable($query);
     $user_profile_search = mysqli_fetch_array($search_result);
 
+    $user_search['first_name'] = "dawn";
     $_SESSION['user_search'] = $user_search;
     $_SESSION['user_profile_search'] = $user_profile_search;
 
 }
 ?>
-<script>
-
-    function transfer_id() {
-        var a = {}
-        a.id = '641ef1100d51f';
-        
-        $.ajax({
-            url: "Gladiator_Bowl_Home.php",method: "post", data: a, success:function() {};
-        })
-    }
-
-    function fi() {
-        const search_show_profile = document.querySelector('#search_show_profile');
-        if (search_show_profile.style.display === 'block')
-            search_show_profile.style.display = 'none';
-        else
-            search_show_profile.style.display = 'block';
-    }
-</script>
-
 
 </html>
