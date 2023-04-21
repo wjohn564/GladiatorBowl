@@ -67,6 +67,20 @@ select {
     background-color: brown;
 }
 
+.interaction-button {
+    background-color: crimson;
+    color: white;
+    padding: 5px;
+    border: none;
+
+    cursor: pointer;
+    float: right;
+}
+
+.interaction-button:hover {
+    background-color: brown;
+}
+
 .based-button {
     background-color: #100d2b;
     padding: 12px 20px;

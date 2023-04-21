@@ -1,9 +1,4 @@
-<?php
-session_start();
-$user_profile_search = $_SESSION['user_profile_search'];
-$user_search = $_SESSION['user_search'];
 
-?>
 <style>
     .show_more {
         display: none;
@@ -11,24 +6,25 @@ $user_search = $_SESSION['user_search'];
 </style>
 
 <br>
-<img class="profile_picture" src="<?php echo $user_profile_search['profile_picture_link']?>"
+<img class="profile_picture" src=""
      onerror="this.onerror=null; this.src='https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';">
 <br><br>
-<h2 style="color: white;"> <?php echo $user_search['first_name'] . '  ' . $user_search['last_name']?> </h2>
-<h3 style="color: #0b5ed7 "> <?php echo $user_profile_search['age'] . ' | ' . $user_search['user_type']?> </h3>
+<h2 id="search_name" style="color: white;"> vyu</h2>
+<h3 id="search_type" style="color: #0b5ed7 "></h3>
 <hr style="color: grey"><br>
 
-<h4 style="color: #999999;"> <?php echo $user_profile_search['description'] ?></h4>
+<h4 id="search_description" style="color: #999999;"> </h4>
 
 <br>
 
 <?php
-if ($user_search['user_type'] == "fighter"): ?>
+if (0): ?>
     <h6 style="color: white; text-align: left;" > Fight result</h6>
     <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-    <h3 style="color: white;"> <?php echo "wins : " . $user_profile_search['wins'] ?> </h3>
-    <h3 style="color: white;"> <?php echo "draws : " . $user_profile_search['draws'] ?> </h3>
-    <h3 style="color: white;"> <?php echo "losses : " . $user_profile_search['losses'] ?> </h3>
+    <h3 id="search_wins" style="color: white;"> </h3>
+    <h3 id="search_draws" style="color: white;">  </h3>
+    <h3 id="search_losses" style="color: white;"> </h3>
+
 
 
     <div class="show_more" id="show_more">
@@ -36,22 +32,22 @@ if ($user_search['user_type'] == "fighter"): ?>
         <br>
         <h6 style="color: white; text-align: left;" > Specification </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <h3 style="color: white; "> <?php echo "fighting style : " . $user_profile_search['fighting_style'] ?></h3>
-        <h3 style="color: white;"> <?php echo "gender : " . $user_profile_search['gender'] ?> </h3>
-        <h3 style="color: white;"> <?php echo "age : " . $user_profile_search['age'] ?> </h3>
-        <h3 style="color: white;"> <?php echo "weight : " . $user_profile_search['weight'] ?> </h3>
-        <h3 style="color: white;"> <?php echo "height : " . $user_profile_search['height'] ?> </h3>
+        <h3 id="search_fighting_style" style="color: white; "></h3>
+        <h3 id="search_gender" style="color: white;"></h3>
+        <h3 id="search_age" style="color: white;"> </h3>
+        <h3 id="search_weight" style="color: white;"></h3>
+        <h3 id="search_height" style="color: white;">  </h3>
 
         <br>
         <h6 style="color: white; text-align: left;" > Medical history </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <h4 style="color: #999999;"> <?php echo $user_profile_search['medical_history'] ?> </h4>
+        <h4 id="search_medical_history" style="color: #999999;">  </h4>
 
         <br>
 
         <h6 style="color: white; text-align: left;" > Fight videos </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <iframe src="<?php echo $user_profile_search['fight_videos'] ?>"></iframe>
+        <iframe src=""></iframe>
 
     </div>
 <?php endif; ?>
