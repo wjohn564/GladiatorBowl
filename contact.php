@@ -11,8 +11,8 @@ if (!$stmt->execute([$user_ask, $user_receive])) {
     echo "Error: " . $stmt->errorInfo()[2];
     exit();
 }
-$res = $stmt->fetch();
-if (($stmt->fetch()))
+
+if (($stmt->fetch()) && $user_ask != $user_receive)
     echo "trouvé";
 else
 {
@@ -24,25 +24,5 @@ else
         exit();
     }
 }
-/*
-$sql = "INSERT INTO contact_t (contact_id, user_ask, user_receive) VALUES (?, ?, ?)";
-$stmt = $pdo->prepare($sql);
-if (!$stmt->execute([$contact_id, $user_ask, $user_receive])) {
-    echo "Error: " . $stmt->errorInfo()[2];
-    exit();
-}
-
-echo "done";*/
-
-/*
-if (!($stmt->fetch())) {
-
-    $sql = "INSERT INTO contact_t (contact_id, user_ask, user_receive) VALUES (?, ?, ?)";
-    $stmt = $pdo->prepare($sql);
-    if (!$stmt->execute([$contact_id, $user_ask, $user_receive])) {
-        echo "Error: " . $stmt->errorInfo()[2];
-        exit();
-    }
-}*/
 
 ?>

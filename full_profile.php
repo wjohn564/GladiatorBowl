@@ -8,10 +8,10 @@ session_start();
     }
 </style>
 
-<br>
+<br><br>
 <img class="profile_picture" src="<?php echo $user_profile['profile_picture_link']?>"
      onerror="this.onerror=null; this.src='https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';">
-<br><br>
+<br><br><br><br>
 <h2 style="color: white;"> <?php echo $user['first_name'] . '  ' . $user['last_name']?> </h2>
 <h3 style="color: #0b5ed7 "> <?php echo $user_profile['age'] . ' | ' . $user['user_type']?> </h3>
 <hr style="color: grey"><br>

@@ -5,55 +5,60 @@
     }
 </style>
 
-<br>
-<img class="profile_picture" src=""
-     onerror="this.onerror=null; this.src='https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';">
-<br><br>
-<h2 id="search_name" style="color: white;"> vyu</h2>
-<h3 id="search_type" style="color: #0b5ed7 "></h3>
-<hr style="color: grey"><br>
+<link rel="stylesheet" href="full_profile_search.css">
+<body class="general_full_profile">
 
-<h4 id="search_description" style="color: #999999;"> </h4>
+    <br>
+    <img id="search_profile_picture" class="profile_picture" src=""
+         onerror="this.onerror=null; this.src='https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';">
+    <br><br>
+    <h2 id="search_name" style="color: white;"></h2>
+    <h3 id="search_type" style="color: #0b5ed7 "></h3>
+    <hr style="color: grey"><br>
 
-<br>
+    <h4 id="search_description" style="color: #999999;"> </h4>
 
-<?php
-if (0): ?>
-    <h6 style="color: white; text-align: left;" > Fight result</h6>
-    <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-    <h3 id="search_wins" style="color: white;"> </h3>
-    <h3 id="search_draws" style="color: white;">  </h3>
-    <h3 id="search_losses" style="color: white;"> </h3>
+    <br>
 
-
-
-    <div class="show_more" id="show_more">
-
-        <br>
-        <h6 style="color: white; text-align: left;" > Specification </h6>
+    <?php
+    if (0): ?>
+        <h6 style="color: white; text-align: left;" > Fight result</h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <h3 id="search_fighting_style" style="color: white; "></h3>
-        <h3 id="search_gender" style="color: white;"></h3>
-        <h3 id="search_age" style="color: white;"> </h3>
-        <h3 id="search_weight" style="color: white;"></h3>
-        <h3 id="search_height" style="color: white;">  </h3>
-
-        <br>
-        <h6 style="color: white; text-align: left;" > Medical history </h6>
-        <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <h4 id="search_medical_history" style="color: #999999;">  </h4>
-
-        <br>
-
-        <h6 style="color: white; text-align: left;" > Fight videos </h6>
-        <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <iframe src=""></iframe>
-
-    </div>
-<?php endif; ?>
+        <h3 id="search_wins" style="color: white;"> </h3>
+        <h3 id="search_draws" style="color: white;">  </h3>
+        <h3 id="search_losses" style="color: white;"> </h3>
 
 
-<input type="button" id="btn_more" value="More">
 
-<script src="js/profile_more.js"></script>
+        <div class="show_more" id="show_more">
 
+            <br>
+            <h6 style="color: white; text-align: left;" > Specification </h6>
+            <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+            <h3 id="search_fighting_style" style="color: white; "></h3>
+            <h3 id="search_gender" style="color: white;"></h3>
+            <h3 id="search_age" style="color: white;"> </h3>
+            <h3 id="search_weight" style="color: white;"></h3>
+            <h3 id="search_height" style="color: white;">  </h3>
+
+            <br>
+            <h6 style="color: white; text-align: left;" > Medical history </h6>
+            <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+            <h4 id="search_medical_history" style="color: #999999;">  </h4>
+
+            <br>
+
+            <h6 style="color: white; text-align: left;" > Fight videos </h6>
+            <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+            <iframe src=""></iframe>
+
+        </div>
+    <?php endif; ?>
+
+
+    <input type="button" id="btn_more" value="More">
+
+    <script src="js/profile_more.js"></script>
+
+
+</body>

@@ -1,0 +1,12 @@
+
+.profile_picture {
+    width: 150px;
+    height: auto;
+    border-radius: 20%;
+    background-size: contain;
+    border: 1px solid white;
+}
+
+.general_full_profile {
+    text-align: center;
+}

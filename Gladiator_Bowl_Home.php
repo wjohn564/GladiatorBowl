@@ -132,7 +132,7 @@ else
                                 <script> const tab = []; </script>
                                 <?php $size = -1; while ($row = mysqli_fetch_array($search_result) and $size < 15 ):
                                     $size++;
-                                    $row_encode = json_encode($row);
+
 
                                     $user_search = $row;
                                     $user_to_search = $user_search['user_id'];
@@ -145,18 +145,30 @@ else
                                     }
                                     $search_profile_result = filterTable($query);
                                     $user_profile_search = mysqli_fetch_array($search_profile_result);
-                                    if ( count($user_profile_search) > 0)
+                                    $row['have_profile'] = 0;
+                                    if ( count($user_profile_search) > 0) {
+                                        $row['have_profile'] = 1;
                                         $user_profile_encode = json_encode($user_profile_search);
-
-
+                                    }
+                                    $row_encode = json_encode($row);
                                     ?>
                                 <script>
+
                                     var myUser = JSON.parse('<?php echo $row_encode; ?>');
 
-                                    //var myUserProfile = JSON.parse('<?php echo $user_profile_encode; ?>');
-                                    //tab.push(myUserProfile);
+                                    var have_profile = '<?php echo ( count($user_profile_search) > 0); ?>';
 
-                                    tab.push(myUser);
+                                    if (have_profile)
+                                    {
+                                        var myUserProfile = JSON.parse('<?php echo $user_profile_encode; ?>');
+
+                                        const dict = Object.assign({}, myUser, myUserProfile);
+                                        tab.push(dict);
+                                    }
+                                    else
+                                        tab.push(myUser);
+
+
 
                                 </script>
                                     <tr>
@@ -165,8 +177,8 @@ else
                                         <td> <?php echo $row["last_name"] ?></td>
                                         <td> <?php echo $row["user_type"] ?></td>
 
-                                        <td> <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP_(this.id)"><i class='material-icons '>add</i></button>
-                                            <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="transfer_id(this.id);"><i class='material-icons '>visibility</i></button>
+                                        <td> <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons '>add</i></button>
+                                            <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);"><i class='material-icons '>visibility</i></button>
 
 
                                         </td>
@@ -203,36 +215,59 @@ else
             search_show_profile.style.display = 'block';
     }
 
-    function transfer_id(id_) {
+    function switch_profile(ind) {
+
+        var search_profile_picture = document.querySelector('#search_profile_picture');
         var search_name = document.querySelector('#search_name');
         var search_type = document.querySelector('#search_type');
-
-        /*
         var search_description = document.querySelector('#search_description');
-        var search_wins = document.querySelector('#search_wins');
-        var search_draws = document.querySelector('#search_draws');
-        var search_losses = document.querySelector('#search_losses');
-        var search_fighting_style = document.querySelector('#search_fighting_style');
-        var search_gender = document.querySelector('#search_gender');
-        var search_age = document.querySelector('#search_age');
-        var search_weight = document.querySelector('#search_weight');
-        var search_height = document.querySelector('#search_height');
-        var search_medical_history = document.querySelector('#search_medical_history');*/
 
-        //tab[id_].age
-        search_name.innerHTML = tab[id_].first_name + " " + tab[id_].last_name;
-        search_type.innerHTML =  + " | " + tab[id_].user_type;
+
+        if (tab[ind].have_profile) {
+            var search_wins = document.querySelector('#search_wins');
+            var search_draws = document.querySelector('#search_draws');
+            var search_losses = document.querySelector('#search_losses');
+            var search_fighting_style = document.querySelector('#search_fighting_style');
+            var search_gender = document.querySelector('#search_gender');
+            var search_age = document.querySelector('#search_age');
+            var search_weight = document.querySelector('#search_weight');
+            var search_height = document.querySelector('#search_height');
+            var search_medical_history = document.querySelector('#search_medical_history');
+        }
+        //
+
+        search_name.innerHTML = tab[ind].first_name + " " + tab[ind].last_name;
+
+        if (tab[ind].have_profile) {
+            search_profile_picture.src = tab[ind].profile_picture_link;
+            search_type.innerHTML = tab[ind].age + " | " + tab[ind].user_type;
+            search_description.innerHTML = tab[ind].description;
+            search_wins.innerHTML = tab[ind].wins;
+            search_draws.innerHTML = tab[ind].draws;
+            search_losses.innerHTML = tab[ind].losses;
+            search_fighting_style.innerHTML = tab[ind].fighting_style;
+            search_gender.innerHTML = tab[ind].gender;
+            search_age.innerHTML = tab[ind].age;
+            search_weight.innerHTML = tab[ind].weight;
+            search_height.innerHTML = tab[ind].height;
+            search_medical_history.innerHTML = tab[ind].medical_history;
+        }
+        else {
+            search_type.innerHTML = tab[ind].user_type;
+            search_profile_picture.src = 'https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';
+            search_description.innerHTML = "";
+        }
         /*
-        search_description.innerHTML = tab[id_].description;
-        search_wins.innerHTML = tab[id_].wins;
-        search_draws.innerHTML = tab[id_].draws;
-        search_losses.innerHTML = tab[id_].losses;
-        search_fighting_style.innerHTML = tab[id_].fighting_style;
-        search_gender.innerHTML = tab[id_].gender;
-        search_age.innerHTML = tab[id_].age;
-        search_weight.innerHTML = tab[id_].weight;
-        search_height.innerHTML = tab[id_].height;
-        search_medical_history.innerHTML = tab[id_].medical_history;*/
+        search_description.innerHTML = tab[ind].description;
+        search_wins.innerHTML = tab[ind].wins;
+        search_draws.innerHTML = tab[ind].draws;
+        search_losses.innerHTML = tab[ind].losses;
+        search_fighting_style.innerHTML = tab[ind].fighting_style;
+        search_gender.innerHTML = tab[ind].gender;
+        search_age.innerHTML = tab[ind].age;
+        search_weight.innerHTML = tab[ind].weight;
+        search_height.innerHTML = tab[ind].height;
+        search_medical_history.innerHTML = tab[ind].medical_history;*/
 
 
 
@@ -240,33 +275,22 @@ else
 
     }
 
-    function sendToPHP_(id_) {
+    function sendToPHP(id_) {
         test.innerHTML = "not passing";
+        const user_id = "<?php echo $user['user_id'] ?>";
         $.ajax({
             type: "POST",
             url: "https://gladiatorbowl.000webhostapp.com/contact.php",
-            data: { user_ask: "641ef1100d51f",
+            data: { user_ask: user_id,
                     user_receive: id_},
             success: (response) => {
                 test.innerHTML = response;
             }
         });
-
     }
 
 
-        function sendToPHP() {
-        const test = document.querySelector('#test');
-        test.innerHTML = "not passing";
-        $.ajax({
-            type: "POST",
-            url: "https://gladiatorbowl.000webhostapp.com/Gladiator_Bowl_Home.php",
-            data: { arg: "passing" },
-            success: () => {
-                test.innerHTML = "<?php echo $_POST['arg'] ?>";
-            }
-        });
-    }
+
 
 </script>
 

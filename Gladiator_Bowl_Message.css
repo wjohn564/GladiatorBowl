@@ -72,24 +72,27 @@ background: #555;
     background-color: #100d2b;
     color: white;
     height: calc(100vh);
-    overflow: auto;
+    overflow: clip;
 }
 
 .container_mini_profile {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    text-align: right;
 }
 
-  .mini_profile {
-      width: 100%;
-      border: 1px solid black;
-      padding: 5px;
-      border-radius: 10px;
-      background-color: #171241;
-      color: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-  }
+.mini_profile {
+    width: 100%;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #171241;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    text-align: left;
+}
+
 
 .mini_profile_picture {
     width: 80px;
@@ -301,7 +304,6 @@ html {
 }
 
 .msger-chat {
-    overflow-y: scroll;
     background-color: #fcfcfe;
     background-image: url("https://img.freepik.com/free-photo/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall_1258-28312.jpg");
     position: relative;
