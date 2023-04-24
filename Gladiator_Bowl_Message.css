@@ -41,15 +41,6 @@ background: #555;
     background-color: #100d2b;
 }
 
-.container_message {
-    height: calc(90vh);
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 10px;
-    background-color: rgb(24, 24, 25);
-
-
-}
 
 
 .container_title {
@@ -108,9 +99,8 @@ body {
 }
 
 #bottom {
-    width: 95%;
-    position: absolute;
-    bottom: 0;
+
+
 
 }
 
@@ -209,6 +199,7 @@ html {
     display: flex;
     align-items: flex-end;
     margin-bottom: 10px;
+    text-align: left;
 }
 .msg:last-of-type {
     margin: 0;
@@ -229,8 +220,9 @@ html {
     padding: 15px;
     border-radius: 15px;
     background: var(--left-msg-bg);
-    overflow: hidden;
+    overflow: clip;
 }
+
 .msg-info {
     display: flex;
     justify-content: space-between;
@@ -291,9 +283,20 @@ html {
 
 
 .msger-chat {
-    flex: 1;
-    overflow-y: auto;
+    height: 550px;
+    width: 100%;
     padding: 20px;
+    
+    overflow-y: scroll;
+    scroll-behavior: smooth; /* optional - adds smooth scrolling behavior */
+    scroll-padding: 20px; /* optional - adds padding to the scrolling area */
+    scroll-snap-type: y proximity; /* optional - adds snapping behavior to the scrolling area */
+    scroll-snap-align: end; /* optional - snaps to the bottom of the scrolling area */
+    scroll-snap-stop: always; /* optional - stops the snapping behavior at the edges of the scrolling area */
+    /* set the scroll position to the bottom */
+    scroll-margin-top: auto;
+    scroll-margin-bottom: 0;
+
 }
 .msger-chat::-webkit-scrollbar {
     width: 6px;
@@ -306,7 +309,7 @@ html {
 }
 
 .msger-chat {
-    background-color: #fcfcfe;
+    background-color: #1f1fc8;
     background-image: url("https://img.freepik.com/free-photo/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall_1258-28312.jpg");
     position: relative;
 }

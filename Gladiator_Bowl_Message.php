@@ -8,23 +8,23 @@ $search_message_result = null;
 ?>
 
 <?php // Mini profile  ini
-require_once "config.php";
 
 $contact_profile = array();
 $contact_profile_json = array();
 
 $user_id = $user['user_id'];
-$query = "SELECT * FROM `contact_t` WHERE user_ask = '$user_id'";
+$query = "SELECT * FROM `contact_t` WHERE user_ask = '$user_id' OR user_receive = '$user_id'";
 $search_result = filterTable($query);
 
 while ($row = mysqli_fetch_array($search_result)) {
 
     $sql = "SELECT * FROM user_t WHERE user_id = ?";
     $stmt = $pdo->prepare($sql);
-    if (!$stmt->execute([$row['user_receive']])) {
-        echo "Error: " . $stmt->errorInfo()[2];
-        exit();
-    }
+    if ($user_id == $row['user_ask'])
+        $stmt->execute([$row['user_receive']]);
+    else
+        $stmt->execute([$row['user_ask']]);
+
     $res_user = $stmt->fetch();
 
     //profile
@@ -38,29 +38,34 @@ while ($row = mysqli_fetch_array($search_result)) {
     }
     $search_profile_result = filterTable($query);
     $user_profile_search = mysqli_fetch_array($search_profile_result);
-    $res_user['have_profile'] = 0;
+    
 
 
     //message
 
     $query = "SELECT * FROM message_t WHERE sender_id = '$user_id' AND receiver_id = '$user_to_search' OR sender_id =  '$user_to_search' AND receiver_id =  '$user_id'";
     $search_message_result = filterTable($query);
+
+    $msg = array();
+    while ($row2 = mysqli_fetch_array($search_message_result))
+    {   
+        $msg[] = $row2;
+    }
+
     
-
-
-
-    if ( count($user_profile_search) > 0) {
+    if ($user_profile_search) {
 
         $res_user['have_profile'] = 1;
+        $res_user['messages'] = $msg;
         $prof = array_merge($user_profile_search, $res_user);
-        $prof['messages'] = $search_message_result;
         $contact_profile_json[] = json_encode($prof);
         $contact_profile[] = $prof;
     }
     else
     {
+        $res_user['have_profile'] = 0;
         $res_user['profile_picture_link'] = 'https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';
-        $res_user['messages'] = $search_profile_result;
+        $res_user['messages'] = $msg;
         $contact_profile_json[] = json_encode($res_user);
         $contact_profile[] = $res_user;
     }
@@ -76,6 +81,8 @@ $user_link = reset($contact_profile_json);
 ?>
 
 <script>
+    var current_ind = 0;
+
     const tab = [];
     <?php foreach ($contact_profile_json as $row):?>
         var user_contact = JSON.parse('<?php echo $row; ?>');
@@ -104,20 +111,61 @@ $user_link = reset($contact_profile_json);
         });
 
         var bottom = document.querySelector('#bottom');
-        bottom.innerHTML = bottom.innerHTML + '<div class="msg right-msg"> <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name"> <?php echo $user['first_name']?></div><div class="msg-info-time">12:46</div></div><div class="msg-text">' + message + '</div></div></div><br>';
+        bottom.innerHTML +=  '<div class="msg right-msg"> <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name"> <?php echo $user['first_name']?></div><div class="msg-info-time">12:46</div></div><div class="msg-text">' + message + '</div></div></div><br>';
         message_.value = "";
     }
 
+    var c = 1;
+    setInterval(function() {
+        
+        var test = document.querySelector('#test');
+        c += 1;
+        
+
+        const user_id = "<?php echo $user['user_id'] ?>";
+        $.ajax({
+            type: "POST",
+            url: "https://gladiatorbowl.000webhostapp.com/update_message.php",
+            data: { user_id: user_id,
+                    user_to_search: user_link.user_id
+                },
+            success: (response) => {
+                
+                
+                var arr_new_msg = JSON.parse(response); 
+                if (arr_new_msg != user_link.messages) {
+                    user_link.messages = arr_new_msg;
+                    switch_message(current_ind);
+                    c = 0;
+                }
+                test.innerHTML = c;
+                
+            }, 
+            error : (fez) => {
+                test.innerHTML = "error";
+            }
+        });
+
+
+    }, 2000);
+
     function switch_message(id_) {
+        current_ind = id_;
         switch_profile(id_);
         var bottom = document.querySelector('#bottom');
-        var test = document.querySelector('#test');
-        test.innerHTML = "pass";
         bottom.innerHTML = "";
 
-        user_link = tab[id_];
-        bottom.innerHTML = "fbezuifbenzn";
+        var user_id = "<?php echo $user_id ?>";
 
+        user_link = tab[id_];
+        user_link.messages.forEach(ele => { 
+            if (ele.sender_id == user_id)
+                bottom.innerHTML += '<div class="msg right-msg"> <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name"> <?php echo $user['first_name']?></div><div class="msg-info-time">' + ele.date + '</div></div><div class="msg-text">' + ele.message + '</div></div></div><br>';        
+            else
+                bottom.innerHTML += '<div class="msg left-msg"> <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name">' + user_link.first_name + '</div><div class="msg-info-time">' + ele.date + '</div></div><div class="msg-text">' + ele.message + '</div></div></div><br>';        
+            
+            //bottom.innerHTML += '<div class="msg right-msg"><div id="msg_image" class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name"> Biot de fenetre</div><div class="msg-info-time" id="msg_time">12:46</div></div><div class="msg-text" ><p id="msg_message"> </p></div></div>></div>"';
+        });
         /*
         $.ajax({
             type: "POST",
@@ -144,6 +192,7 @@ $user_link = reset($contact_profile_json);
 
 
         if (user_link.have_profile) {
+            /*
             var search_wins = document.querySelector('#search_wins');
             var search_draws = document.querySelector('#search_draws');
             var search_losses = document.querySelector('#search_losses');
@@ -152,7 +201,7 @@ $user_link = reset($contact_profile_json);
             var search_age = document.querySelector('#search_age');
             var search_weight = document.querySelector('#search_weight');
             var search_height = document.querySelector('#search_height');
-            var search_medical_history = document.querySelector('#search_medical_history');
+            var search_medical_history = document.querySelector('#search_medical_history');*/
         }
         //
 
@@ -165,6 +214,7 @@ $user_link = reset($contact_profile_json);
             search_profile_picture.src = user_link.profile_picture_link;
             search_type.innerHTML = user_link.age + " | " + user_link.user_type;
             search_description.innerHTML = user_link.description;
+            /*
             search_wins.innerHTML = user_link.wins;
             search_draws.innerHTML = user_link.draws;
             search_losses.innerHTML = user_link.losses;
@@ -173,7 +223,7 @@ $user_link = reset($contact_profile_json);
             search_age.innerHTML = user_link.age;
             search_weight.innerHTML = user_link.weight;
             search_height.innerHTML = user_link.height;
-            search_medical_history.innerHTML = user_link.medical_history;
+            search_medical_history.innerHTML = user_link.medical_history;*/
         }
         else {
             search_type.innerHTML = user_link.user_type;
@@ -181,6 +231,8 @@ $user_link = reset($contact_profile_json);
             search_description.innerHTML = "";
         }
     }
+
+    
 
 
 </script>
@@ -196,7 +248,7 @@ $user_link = reset($contact_profile_json);
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <link rel="stylesheet" href="css/Gladiator_Bowl_Message.css">
+    <link rel="stylesheet" href="Gladiator_Bowl_Message.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
@@ -253,28 +305,24 @@ $user_link = reset($contact_profile_json);
             <div style="height: 100%; width: 100%">
 
                 <section class="msger">
-                    <header class="msger-header">
+                    <div class="msger-header">
                         <div class="msger-header-title">
                             <i class="fas fa-comment-alt" id="change_name"></i>
                         </div>
                         <div class="msger-header-options">
                             <span><i class="fas fa-cog"></i></span>
                         </div>
-                    </header>
+                    </div>
 
-                    <main class="msger-chat container_only_message">
-                        <div id="bottom">
+                    
+                    <div class="msger-chat" id="bottom"> 
+                    </div>
 
 
-
-                        </div>
-
-                    </main>
-
-                    <form class="msger-inputarea">
+                    <div class="msger-inputarea">
                         <input type="text" class="msger-input" placeholder="Enter your message..." id="message">
                         <button type="button" class="msger-send-btn" onclick="send_message()">Send</button>
-                    <form>
+                    <div>
                 </section>
             </div>
 
@@ -288,6 +336,8 @@ $user_link = reset($contact_profile_json);
         <script>
             switch_profile(0);
         </script>
+
+        <button onclick="update_message();">tets</button>
 
     </div>
 
