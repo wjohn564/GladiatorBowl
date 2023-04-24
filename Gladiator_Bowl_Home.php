@@ -18,13 +18,13 @@ if (isset($_POST['search']) and $_POST["value_to_search"] != "")
 
     switch ($_POST["job_filter"]) {
         case "all":
-            $query = "SELECT * FROM `user_t` WHERE user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search'";
+            $query = "SELECT * FROM `user_t` WHERE  first_name LIKE '%$value_to_search%' OR last_name LIKE '%$value_to_search%'";
             break;
         case "fighter":
-            $query = "SELECT * FROM `user_t` WHERE ((user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search') AND user_type = 'fighter' )";
+            $query = "SELECT * FROM `user_t` WHERE ((first_name LIKE '%$value_to_search%' OR last_name LIKE '%$value_to_search%') AND user_type = 'fighter')";
             break;
         default:
-            $query = "SELECT * FROM `user_t` WHERE ((user_id = '$value_to_search' OR first_name = '$value_to_search' OR last_name = '$value_to_search') AND user_type = 'manager' )";
+            $query = "SELECT * FROM `user_t` WHERE ((first_name LIKE '%$value_to_search%' OR last_name LIKE '%$value_to_search%') AND user_type = 'manager' )";
     }
     $search_result = filterTable($query);
 }
@@ -47,8 +47,9 @@ else
 
 ?>
 
-
-
+<script>
+    var user_to_ban_id = null;
+</script>
 
 <!DOCTYPE html>
 <html>
@@ -58,7 +59,12 @@ else
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <link rel="stylesheet" href="Gladiator_Bowl_Home.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" href="css/Gladiator_Bowl_Home.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
     
@@ -123,11 +129,10 @@ else
 
                             <table class="table">
                                 <tr style="color:#100d2b">
-                                    <th>Id</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>User Type</th>
-                                    <th>Interaction <?php echo $_GET['arg'] ?></th>
+                                    <th>Interaction</th>
                                 </tr>
                                 <script> const tab = []; </script>
                                 <?php $size = -1; while ($row = mysqli_fetch_array($search_result) and $size < 15 ):
@@ -172,22 +177,23 @@ else
 
                                 </script>
                                     <tr>
-                                        <td> <?php echo $row["user_id"] ?></td>
                                         <td> <?php echo $row["first_name"] ?></td>
                                         <td> <?php echo $row["last_name"] ?></td>
                                         <td> <?php echo $row["user_type"] ?></td>
 
-                                        <td> <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons '>add</i></button>
+                                        <td>
+                                            <?php if ($user['user_type'] == "admin"): ?>
+                                                <button type="button" class="interaction-button" data-toggle="modal" data-target="#exampleModal" id="<?php echo  $row["user_id"]?>" onclick="user_to_ban_id = this.id;"><i class='material-icons '>no_accounts</i></button>
+                                            <?php endif; ?>
+                                            <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons '>add</i></button>
                                             <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);"><i class='material-icons '>visibility</i></button>
-
-
+                                            
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
 
 
                             </table>
-
 
                         </div>
 
@@ -203,6 +209,38 @@ else
 
     </div>
 </body>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ban</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="ban_reason" class="col-form-label">Reason:</label>
+            <textarea class="form-control" id="ban_reason"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="ban_duration" class="col-form-label">Duration: (in days)</label>
+            <input type="number" class="form-control" id="ban_duration">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="ban_user();" data-dismiss="modal">Ban user</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 <script>
@@ -287,6 +325,29 @@ else
                 test.innerHTML = response;
             }
         });
+    }
+
+    function ban_user() {
+        var test = document.querySelector('#test');
+        test.innerHTML = user_to_ban_id;
+
+        var admin_id = '<?php echo $user['user_id']?>';
+        var ban_reason = document.querySelector('#ban_reason').value;
+        test.innerHTML = ban_reason;
+        var ban_duration = document.querySelector('#ban_duration').value;
+
+        $.ajax({
+            type: "POST",
+            url: "https://gladiatorbowl.000webhostapp.com/ban_user.php",
+            data: { user_id: user_to_ban_id,
+                    banned_by: admin_id,
+                    reason: ban_reason, 
+                    duration: ban_duration},
+            success: (response) => {
+                test.innerHTML = response;
+            }
+        });
+
     }
 
 

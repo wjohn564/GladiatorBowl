@@ -1,31 +1,26 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <?php
+session_start();
 require "config.php";
-$ind = $_POST['ind'];
-$user = $contact_profile[$ind];
-$user_id = $user['user_id'];
-$user_link = $user;
-$query = "SELECT * FROM message_t WHERE sender_id =  '$user_id' OR receiver_id =  '$user_id'";
-$search_message_result = filterTable($query);
+$sender_id = $_POST['sender_id'];
+$receiver_id = $_POST['receiver_id'];
 
-echo "done";
+$query = "SELECT * FROM message_t WHERE sender_id = '$sender_id' AND receiver_id = '$receiver_id' OR sender_id =  '$receiver_id' AND receiver_id =  '$sender_id'";
+//$search_message_result = filterTable($query);
+
+$stmt = $pdo->prepare($sql);
+if (!$stmt->execute([$user_ask, $user_receive])) {
+    echo "Error: " . $stmt->errorInfo()[2];
+    exit();
+}
+$search_message_result = $stmt->fetch();
+
+$a = array();
+while ($row = $search_message_result->fetch(PDO::FETCH_ASSOC)) {
+    $a[] = $row;
+}
+
+echo json_encode($a);
 ?>
 
-<?php while ($row = mysqli_fetch_array($search_message_result)) :?>
-    <div class="msg right-msg">
-        <div
-            class="msg-img"
-            style="background-image: url('https://image.flaticon.com/icons/svg/145/145867.svg')"
-        ></div>
 
-        <div class="msg-bubble">
-            <div class="msg-info">
-                <div class="msg-info-name"> <?php echo "name"?></div>
-                <div class="msg-info-time">12:46</div>
-            </div>
-
-            <div class="msg-text">
-                <?php echo $row['message'] ?>
-            </div>
-        </div>
-    </div>
-<?php endwhile; ?>
