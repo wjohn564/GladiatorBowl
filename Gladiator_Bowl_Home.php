@@ -84,7 +84,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-    <link rel="stylesheet" href="css/Gladiator_Bowl_Home.css">
+    <link rel="stylesheet" href="Gladiator_Bowl_Home.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
     
@@ -96,25 +96,27 @@ while ($row = mysqli_fetch_array($contact_result)) {
     <?php require "banner.php"; ?>
 
     <div id="main">
-        <h1 style="color: #100d2b">Join the Ultimate Fighting Network</h1>
-        <h4 style="color: #100d2b">Connect with other MMA fighters from around the world, showcase your skills, and grow your career.</h4>
+        <!-- <h1 style="color: #100d2b">Join the Ultimate Fighting Network</h1> -->
+        <!-- <h4 style="color: #100d2b">Connect with other MMA fighters from around the world, showcase your skills, and grow your career.</h4> -->
 
 
-        <div>
-            <div class="container2 Profile">
-                <a style="float: right;" href="<?php if ($user['user_type'] == "fighter") echo 'profile_fighter.php'; else echo 'profile_manager.php';?>">
-                    <i class="material-icons ">edit</i> Edit profile</a>
+        <div class="row" style="min-height: calc(90vh);">
+            
+        <div class="container_center col">
+            <a style="float: right;" href="<?php if ($user['user_type'] == "fighter") echo 'profile_fighter.php'; else echo 'profile_manager.php';?>">
+                <i class="material-icons ">edit</i> Edit profile</a>
 
-                <?php require "full_profile.php"; ?>
+            <?php require "full_profile.php"; ?>
 
-            </div>
+        </div>
 
-            <div class="container2 Profile search_show_profile" style="float: right" id="search_show_profile">
-                <?php require "full_profile_search.php"; ?>
-            </div>
-
+        <div class="container_center col-md-6" style="background-color: #100d2b" >
+            <h1 style="color: white;">To complete here</h1>
+        </div>
+        
+        <div class="container_center col"> 
             <form action="Gladiator_Bowl_Home.php" method="post">
-                <div class="container Search col-6" style="float: inside">
+                <div class="container" >   
                     <div class="row">
                         <div class="col-5.5">
 
@@ -210,7 +212,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
                                             <?php else: ?>
                                                 <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">group_add</i></button>
                                                 <?php endif; ?>
-                                            <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);"><i class='material-icons '>visibility</i></button>
+                                            <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);" data-toggle="modal" data-target="#modal_profile"><i class='material-icons '>visibility</i></button>
                                             
                                         </td>
                                     </tr>
@@ -222,17 +224,34 @@ while ($row = mysqli_fetch_array($contact_result)) {
                         </div>
 
                     </div>
+                
                 </div>
-
             </form>
-
-
-
         </div>
+        
+
+        
+        
+
+                              
+
 
 
     </div>
 </body>
+
+<div class="modal fade" id="modal_profile" tabindex="-1" role="dialog" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="container_center" id="search_show_profile">
+            <?php require "full_profile_search.php" ?>
+        </div>
+        <div class="modal-footer" style="background-color: #100d2b">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
