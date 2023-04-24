@@ -118,9 +118,6 @@ $user_link = reset($contact_profile_json);
     var c = 1;
     setInterval(function() {
         
-        var test = document.querySelector('#test');
-        c += 1;
-        
 
         const user_id = "<?php echo $user['user_id'] ?>";
         $.ajax({
@@ -136,14 +133,9 @@ $user_link = reset($contact_profile_json);
                 if (arr_new_msg != user_link.messages) {
                     user_link.messages = arr_new_msg;
                     switch_message(current_ind);
-                    c = 0;
                 }
-                test.innerHTML = c;
-                
             }, 
-            error : (fez) => {
-                test.innerHTML = "error";
-            }
+
         });
 
 
@@ -164,21 +156,8 @@ $user_link = reset($contact_profile_json);
             else
                 bottom.innerHTML += '<div class="msg left-msg"> <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name">' + user_link.first_name + '</div><div class="msg-info-time">' + ele.date + '</div></div><div class="msg-text">' + ele.message + '</div></div></div><br>';        
             
-            //bottom.innerHTML += '<div class="msg right-msg"><div id="msg_image" class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name"> Biot de fenetre</div><div class="msg-info-time" id="msg_time">12:46</div></div><div class="msg-text" ><p id="msg_message"> </p></div></div>></div>"';
         });
-        /*
-        $.ajax({
-            type: "POST",
-            url: "https://gladiatorbowl.000webhostapp.com/switch_message.php",
-            data: { sender_id: "641ef1100d51f",
-                    receiver_id: "641b38af91e77"},
-            success: (response) => {
-                var messages = JSON.parse(response);
 
-                test.innerHTM = messages.length;
-
-            }
-        });*/
     }
 
     function switch_profile(id_) {
@@ -248,7 +227,7 @@ $user_link = reset($contact_profile_json);
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <link rel="stylesheet" href="Gladiator_Bowl_Message.css">
+    <link rel="stylesheet" href="css/Gladiator_Bowl_Message.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
@@ -307,7 +286,7 @@ $user_link = reset($contact_profile_json);
                 <section class="msger">
                     <div class="msger-header">
                         <div class="msger-header-title">
-                            <i class="fas fa-comment-alt" id="change_name"></i>
+                            <i class="fas fa-comment-alt" id="change_name">Select a User</i>
                         </div>
                         <div class="msger-header-options">
                             <span><i class="fas fa-cog"></i></span>
@@ -315,14 +294,16 @@ $user_link = reset($contact_profile_json);
                     </div>
 
                     
-                    <div class="msger-chat" id="bottom"> 
-                    </div>
+                    <div class="msger-chat" id="bottom"></div>
 
 
                     <div class="msger-inputarea">
                         <input type="text" class="msger-input" placeholder="Enter your message..." id="message">
                         <button type="button" class="msger-send-btn" onclick="send_message()">Send</button>
                     <div>
+
+
+                    
                 </section>
             </div>
 
@@ -333,11 +314,7 @@ $user_link = reset($contact_profile_json);
 
     <div class="container_center col-md-3 col-sm-3">
         <?php require "full_profile_search.php" ?>
-        <script>
-            switch_profile(0);
-        </script>
 
-        <button onclick="update_message();">tets</button>
 
     </div>
 

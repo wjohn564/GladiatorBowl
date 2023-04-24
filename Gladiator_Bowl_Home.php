@@ -47,6 +47,26 @@ else
 
 ?>
 
+
+<?php 
+
+$user_contact = array();
+
+$user_id = $user['user_id'];
+$query = "SELECT * FROM `contact_t` WHERE user_ask = '$user_id' OR user_receive = '$user_id'";
+$contact_result = filterTable($query);
+
+while ($row = mysqli_fetch_array($contact_result)) {
+    if ($user_id == $row['user_ask'])
+        $user_contact[] = $row['user_receive'];
+    else
+        $user_contact[] = $row['user_ask'];
+}
+
+    
+?>
+
+
 <script>
     var user_to_ban_id = null;
 </script>
@@ -185,7 +205,11 @@ else
                                             <?php if ($user['user_type'] == "admin"): ?>
                                                 <button type="button" class="interaction-button" data-toggle="modal" data-target="#exampleModal" id="<?php echo  $row["user_id"]?>" onclick="user_to_ban_id = this.id;"><i class='material-icons '>no_accounts</i></button>
                                             <?php endif; ?>
-                                            <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons '>add</i></button>
+                                            <?php if (in_array($row['user_id'], $user_contact)): ?>
+                                                <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">person_remove</i></button>
+                                            <?php else: ?>
+                                                <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">group_add</i></button>
+                                                <?php endif; ?>
                                             <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);"><i class='material-icons '>visibility</i></button>
                                             
                                         </td>
@@ -244,7 +268,12 @@ else
 
 
 <script>
-
+    function change_sign_contact(ele) {
+        if (ele.innerHTML == 'group_add')
+            ele.innerHTML = 'person_remove';
+        else                        
+            ele.innerHTML = 'group_add';
+    }
     function show_profile() {
         const search_show_profile = document.querySelector('#search_show_profile');
         if (search_show_profile.style.display === 'block')
@@ -314,16 +343,16 @@ else
     }
 
     function sendToPHP(id_) {
-        test.innerHTML = "not passing";
+        //change sign
+        //contact_sign' . $row["user_id"]
+
         const user_id = "<?php echo $user['user_id'] ?>";
         $.ajax({
             type: "POST",
             url: "https://gladiatorbowl.000webhostapp.com/contact.php",
             data: { user_ask: user_id,
                     user_receive: id_},
-            success: (response) => {
-                test.innerHTML = response;
-            }
+            success: (response) => {}
         });
     }
 

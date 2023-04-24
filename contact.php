@@ -13,7 +13,14 @@ if (!$stmt->execute([$user_ask, $user_receive])) {
 }
 
 if (($stmt->fetch()) && $user_ask != $user_receive)
-    echo "trouvé";
+{
+    $sql = "DELETE FROM contact_t WHERE user_ask = '$user_ask' AND user_receive = '$user_receive'";
+    $stmt = $pdo->prepare($sql);
+    if (!$stmt->execute()) {
+        echo "Error: " . $stmt->errorInfo()[2];
+        exit();
+    }
+}
 else
 {
     $contact_id = uniqid();
