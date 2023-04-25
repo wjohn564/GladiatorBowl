@@ -240,8 +240,8 @@ while ($row = mysqli_fetch_array($contact_result)) {
     </div>
 </body>
 
-<div class="modal fade" id="modal_profile" tabindex="-1" role="dialog" >
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="modal_profile" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" >
     <div class="modal-content">
         <div class="container_center" id="search_show_profile">
             <?php require "full_profile_search.php" ?>
@@ -257,7 +257,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header container_center">
         <h5 class="modal-title" id="exampleModalLabel">Ban</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -328,14 +328,14 @@ while ($row = mysqli_fetch_array($contact_result)) {
             search_profile_picture.src = tab[ind].profile_picture_link;
             search_type.innerHTML = tab[ind].age + " | " + tab[ind].user_type;
             search_description.innerHTML = tab[ind].description;
-            search_wins.innerHTML = tab[ind].wins;
-            search_draws.innerHTML = tab[ind].draws;
-            search_losses.innerHTML = tab[ind].losses;
-            search_fighting_style.innerHTML = tab[ind].fighting_style;
-            search_gender.innerHTML = tab[ind].gender;
-            search_age.innerHTML = tab[ind].age;
-            search_weight.innerHTML = tab[ind].weight;
-            search_height.innerHTML = tab[ind].height;
+            search_wins.innerHTML = "wins : " . tab[ind].wins;
+            search_draws.innerHTML = "draws : " . tab[ind].draws;
+            search_losses.innerHTML = "losses : " . tab[ind].losses;
+            search_fighting_style.innerHTML = "fighting style : " . tab[ind].fighting_style;
+            search_gender.innerHTML = "gender : " . tab[ind].gender;
+            search_age.innerHTML = "age : " . tab[ind].age;
+            search_weight.innerHTML = "weight : " . tab[ind].weight;
+            search_height.innerHTML = "height : " . tab[ind].height;
             search_medical_history.innerHTML = tab[ind].medical_history;
         }
         else {

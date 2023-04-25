@@ -2,11 +2,16 @@
 session_start();
 
 ?>
-<style>
-    .show_more {
-        display: none;
+<script>
+    function show_more() {
+        var show_more = document.querySelector('#show_more');
+        if (show_more.style.display === 'block')
+            show_more.style.display = 'none';
+        else
+            show_more.style.display = 'block';
     }
-</style>
+        
+</script>
 
 <br><br>
 <img class="profile_picture" src="<?php echo $user_profile['profile_picture_link']?>"
@@ -20,16 +25,14 @@ session_start();
 
 <br>
 
-<?php
-if ($user['user_type'] == "fighter"): ?>
-    <h6 style="color: white; text-align: left;" > Fight result</h6>
-    <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-    <h3 style="color: white;"> <?php echo "wins : " . $user_profile['wins'] ?> </h3>
-    <h3 style="color: white;"> <?php echo "draws : " . $user_profile['draws'] ?> </h3>
-    <h3 style="color: white;"> <?php echo "losses : " . $user_profile['losses'] ?> </h3>
-
-
-    <div class="show_more" id="show_more">
+<div id="show_more" style="display = 'none';">
+    <?php
+    if ($user['user_type'] == "fighter"): ?>
+        <h6 style="color: white; text-align: left;" > Fight result</h6>
+        <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+        <h3 style="color: white;"> <?php echo "wins : " . $user_profile['wins'] ?> </h3>
+        <h3 style="color: white;"> <?php echo "draws : " . $user_profile['draws'] ?> </h3>
+        <h3 style="color: white;"> <?php echo "losses : " . $user_profile['losses'] ?> </h3>
 
         <br>
         <h6 style="color: white; text-align: left;" > Specification </h6>
@@ -51,10 +54,9 @@ if ($user['user_type'] == "fighter"): ?>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
         <iframe src="<?php echo $user_profile['fight_videos'] ?>"></iframe>
 
-    </div>
-<?php endif; ?>
 
+    <?php endif; ?>
+</div>
 
-<input type="button" id="btn_more" value="More">
+<input type="button" onclick="show_more();" value="More">
 
-<script src="js/profile_more.js"></script>

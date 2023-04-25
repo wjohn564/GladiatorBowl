@@ -1,6 +1,6 @@
 
 <style>
-    .show_more {
+    .show_more2 {
         display: none;
     }
 </style>
@@ -20,45 +20,52 @@
 
     <br>
 
-    <?php
-    if (0): ?>
+    <div id="show_more2">
         <h6 style="color: white; text-align: left;" > Fight result</h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
         <h3 id="search_wins" style="color: white;"> </h3>
         <h3 id="search_draws" style="color: white;">  </h3>
         <h3 id="search_losses" style="color: white;"> </h3>
 
+        <br>
+        <h6 style="color: white; text-align: left;" > Specification </h6>
+        <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+        <h3 id="search_fighting_style" style="color: white; "></h3>
+        <h3 id="search_gender" style="color: white;"></h3>
+        <h3 id="search_age" style="color: white;"> </h3>
+        <h3 id="search_weight" style="color: white;"></h3>
+        <h3 id="search_height" style="color: white;">  </h3>
+
+        <br>
+        <h6 style="color: white; text-align: left;" > Medical history </h6>
+        <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+        <h4 id="search_medical_history" style="color: #999999;">  </h4>
+
+        <br>
+
+        <h6 style="color: white; text-align: left;" > Fight videos </h6>
+        <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
+        <iframe src=""></iframe>
+
+    </div>
 
 
-        <div class="show_more" id="show_more">
+    <input type="button" value="More" onclick="show_more2()" id="btn_more2">
 
-            <br>
-            <h6 style="color: white; text-align: left;" > Specification </h6>
-            <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-            <h3 id="search_fighting_style" style="color: white; "></h3>
-            <h3 id="search_gender" style="color: white;"></h3>
-            <h3 id="search_age" style="color: white;"> </h3>
-            <h3 id="search_weight" style="color: white;"></h3>
-            <h3 id="search_height" style="color: white;">  </h3>
-
-            <br>
-            <h6 style="color: white; text-align: left;" > Medical history </h6>
-            <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-            <h4 id="search_medical_history" style="color: #999999;">  </h4>
-
-            <br>
-
-            <h6 style="color: white; text-align: left;" > Fight videos </h6>
-            <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-            <iframe src=""></iframe>
-
-        </div>
-    <?php endif; ?>
-
-
-    <input type="button" id="btn_more" value="More">
-
-    <script src="js/profile_more.js"></script>
-
+    <script>
+        function show_more2() {
+            var btn = document.querySelector('#btn_more2');
+            var show_more2 = document.querySelector('#show_more2');
+            if (show_more2.style.display === 'block') {
+                show_more2.style.display = 'none';
+                btn.value = "More";
+            }
+            else {
+                show_more2.style.display = 'block';
+                btn.value = "Less";
+            }
+        }
+        
+    </script>
 
 </body>

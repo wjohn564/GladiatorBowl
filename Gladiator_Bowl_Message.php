@@ -52,10 +52,12 @@ while ($row = mysqli_fetch_array($search_result)) {
         $msg[] = $row2;
     }
 
-    
+    $res_user['have_profile'] = 0;
     if ($user_profile_search) {
-
-        $res_user['have_profile'] = 1;
+        if ($res_user["user_type"] == "fighter")
+            $res_user['have_profile'] = 1;
+        if ($res_user["user_type"] == "manager")
+            $res_user['have_profile'] = 2;
         $res_user['messages'] = $msg;
         $prof = array_merge($user_profile_search, $res_user);
         $contact_profile_json[] = json_encode($prof);
@@ -63,7 +65,6 @@ while ($row = mysqli_fetch_array($search_result)) {
     }
     else
     {
-        $res_user['have_profile'] = 0;
         $res_user['profile_picture_link'] = 'https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';
         $res_user['messages'] = $msg;
         $contact_profile_json[] = json_encode($res_user);
@@ -170,8 +171,8 @@ $user_link = reset($contact_profile_json);
         var search_description = document.querySelector('#search_description');
 
 
-        if (user_link.have_profile) {
-            /*
+        if (user_link.have_profile == 1) {
+            
             var search_wins = document.querySelector('#search_wins');
             var search_draws = document.querySelector('#search_draws');
             var search_losses = document.querySelector('#search_losses');
@@ -182,27 +183,30 @@ $user_link = reset($contact_profile_json);
             var search_height = document.querySelector('#search_height');
             var search_medical_history = document.querySelector('#search_medical_history');*/
         }
-        //
+        
 
         var change_name = document.querySelector('#change_name');
         change_name.innerHTML = user_link.first_name + " " + user_link.last_name;
 
         search_name.innerHTML = user_link.first_name + " " + user_link.last_name;
 
-        if (user_link.have_profile) {
+        if (user_link.have_profile > 0) {
             search_profile_picture.src = user_link.profile_picture_link;
             search_type.innerHTML = user_link.age + " | " + user_link.user_type;
             search_description.innerHTML = user_link.description;
-            /*
-            search_wins.innerHTML = user_link.wins;
-            search_draws.innerHTML = user_link.draws;
-            search_losses.innerHTML = user_link.losses;
-            search_fighting_style.innerHTML = user_link.fighting_style;
-            search_gender.innerHTML = user_link.gender;
-            search_age.innerHTML = user_link.age;
-            search_weight.innerHTML = user_link.weight;
-            search_height.innerHTML = user_link.height;
-            search_medical_history.innerHTML = user_link.medical_history;*/
+            
+            if (user_link.have_profile == 1) {
+                search_wins.innerHTML = user_link.wins;
+                search_draws.innerHTML = user_link.draws;
+                search_losses.innerHTML = user_link.losses;
+                search_fighting_style.innerHTML = user_link.fighting_style;
+                search_gender.innerHTML = user_link.gender;
+                search_age.innerHTML = user_link.age;
+                search_weight.innerHTML = user_link.weight;
+                search_height.innerHTML = user_link.height;
+                search_medical_history.innerHTML = user_link.medical_history;
+            }
+            
         }
         else {
             search_type.innerHTML = user_link.user_type;
@@ -279,7 +283,7 @@ $user_link = reset($contact_profile_json);
             <h1 id="test" > <i class="material-icons ">chat</i> Message </h1>
         </div>
 
-        <div class="row " style="height: 90%; width: 100%">
+        <div class="row " style="height: 89%; width: 100%">
 
             <div style="height: 100%; width: 100%">
 
