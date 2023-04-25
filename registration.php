@@ -8,7 +8,7 @@ require_once('config.php');
 <head>
     <title>Registration</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="css/registration.css">
 </head>
 
 <body>
