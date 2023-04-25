@@ -293,7 +293,7 @@ html {
     scroll-snap-align: end; /* optional - snaps to the bottom of the scrolling area */
     scroll-snap-stop: always; /* optional - stops the snapping behavior at the edges of the scrolling area */
     /* set the scroll position to the bottom */
-    scroll-margin-top: auto;
+
     scroll-margin-bottom: 0;
 
 }

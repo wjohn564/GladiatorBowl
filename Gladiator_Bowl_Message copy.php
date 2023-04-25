@@ -116,7 +116,7 @@ $user_link = reset($contact_profile_json);
         message_.value = "";
     }
 
-
+*
     setInterval(function() {
         
 
@@ -142,7 +142,6 @@ $user_link = reset($contact_profile_json);
 
     }, 2000);
 
-
     function switch_link(id_) {
         current_ind = id_;
         switch_message(id_);
@@ -151,7 +150,6 @@ $user_link = reset($contact_profile_json);
         var bottom = document.querySelector('#bottom');
         bottom.scrollTop = bottom.scrollHeight;
     }
-
 
     function switch_message(id_) {
         var bottom = document.querySelector('#bottom');
@@ -167,6 +165,10 @@ $user_link = reset($contact_profile_json);
                 bottom.innerHTML += '<div class="msg left-msg"> <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"></div><div class="msg-bubble"><div class="msg-info"><div class="msg-info-name">' + user_link.first_name + '</div><div class="msg-info-time">' + ele.date + '</div></div><div class="msg-text">' + ele.message + '</div></div></div><br>';        
             
         });
+
+
+        
+
     }
 
     function switch_profile(id_) {
@@ -268,7 +270,7 @@ $user_link = reset($contact_profile_json);
         <div class="container_mini_profile">
 
             <?php $ind = -1; foreach ($contact_profile as $row): $ind += 1;?>
-                <div  id="<?php echo $ind ?>" type="button" onclick="switch_link(this.id)" class="mini_profile row">
+                <div  id="<?php echo $ind ?>" type="button" onclick="switch_link(this.id);" class="mini_profile row">
                     <div class="col-md-2 col-sm-2" style="margin: 20px">
                         <img class="mini_profile_picture" src="<?php echo $row['profile_picture_link'] ?>">
                     </div>

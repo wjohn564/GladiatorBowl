@@ -120,7 +120,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
                     <div class="row">
                         <div class="col-5.5">
 
-                            <h2 class="col-5" style="color:#100d2b">Search for users</h2>
+                            <h2 style="color:#100d2b; margin-top: 15px;">Search for users</h2>
 
                             <?php if (isset($_POST['value_to_search'])): ?>
                                 <input class="search-request" type="text" name="value_to_search" value="<?php echo $_POST['value_to_search']?>">
@@ -205,12 +205,12 @@ while ($row = mysqli_fetch_array($contact_result)) {
 
                                         <td>
                                             <?php if ($user['user_type'] == "admin"): ?>
-                                                <button type="button" class="interaction-button" data-toggle="modal" data-target="#exampleModal" id="<?php echo  $row["user_id"]?>" onclick="user_to_ban_id = this.id;"><i class='material-icons '>no_accounts</i></button>
+                                                <button type="button" class="interaction-button" id="<?php echo  $row["user_id"]?>" onclick="ban_click(this.id)"><i class='material-icons '>no_accounts</i></button>
                                             <?php endif; ?>
                                             <?php if (in_array($row['user_id'], $user_contact)): ?>
-                                                <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">person_remove</i></button>
+                                                <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="modify_contact(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">person_remove</i></button>
                                             <?php else: ?>
-                                                <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="sendToPHP(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">group_add</i></button>
+                                                <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="modify_contact(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">group_add</i></button>
                                                 <?php endif; ?>
                                             <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);" data-toggle="modal" data-target="#modal_profile"><i class='material-icons '>visibility</i></button>
                                             
@@ -254,7 +254,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
 </div>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_to_ban" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header container_center">
@@ -283,10 +283,66 @@ while ($row = mysqli_fetch_array($contact_result)) {
   </div>
 </div>
 
-
+                                  
+<div class="modal fade" id="modal_is_ban" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">The user is already banned</h5>
+        </div>
+        <div class="modal-body">
+            
+            <div class="form-group">
+                <label for="modal_reason" class="col-form-label">Reason:</label>
+                <p class="form-control" id="modal_reason"></p>
+            </div>
+            <div class="form-group">
+                <label for="modal_duration" class="col-form-label">Duration: (in days)</label>
+                <p type="number" class="form-control" id="modal_duration"></p>
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="unban_user();">Remove ban</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="$('#modal_to_ban').modal('show');;">Modify ban</button>
+        </div>
+        </div>
+    </div>
+    </div>
 
 
 <script>
+
+    function ban_click(id_) {
+        var modal_reason = document.querySelector('#modal_reason');
+        var modal_duration = document.querySelector('#modal_duration');
+
+        user_to_ban_id = id_;
+        $.ajax({
+            type: "POST",
+            url: "https://gladiatorbowl.000webhostapp.com/is_ban.php",
+            data: { user_to_ban: id_},
+            success: (response) => {
+                if (response == 0)
+                {
+                    $('#modal_to_ban').modal('show');
+                }
+                else
+                {
+                    var ban = JSON.parse(response);
+                    modal_reason.innerHTML = ban.reason;
+                    modal_duration.innerHTML = ban.duration + " days";
+                    // the user is already ban
+                    $('#modal_is_ban').modal('show');
+                    
+                }
+
+            }
+        });
+    }
+
+
     function change_sign_contact(ele) {
         if (ele.innerHTML == 'group_add')
             ele.innerHTML = 'person_remove';
@@ -361,7 +417,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
 
     }
 
-    function sendToPHP(id_) {
+    function modify_contact(id_) {
         //change sign
         //contact_sign' . $row["user_id"]
 
@@ -376,12 +432,8 @@ while ($row = mysqli_fetch_array($contact_result)) {
     }
 
     function ban_user() {
-        var test = document.querySelector('#test');
-        test.innerHTML = user_to_ban_id;
-
         var admin_id = '<?php echo $user['user_id']?>';
         var ban_reason = document.querySelector('#ban_reason').value;
-        test.innerHTML = ban_reason;
         var ban_duration = document.querySelector('#ban_duration').value;
 
         $.ajax({
@@ -392,7 +444,19 @@ while ($row = mysqli_fetch_array($contact_result)) {
                     reason: ban_reason, 
                     duration: ban_duration},
             success: (response) => {
-                test.innerHTML = response;
+            
+            }
+        });
+
+    }
+
+    function unban_user() {
+
+        $.ajax({
+            type: "POST",
+            url: "https://gladiatorbowl.000webhostapp.com/unban_user.php",
+            data: { user_id: user_to_ban_id},
+            success: (response) => {
             }
         });
 

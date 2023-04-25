@@ -26,7 +26,7 @@
         <h3 id="search_wins" style="color: white;"> </h3>
         <h3 id="search_draws" style="color: white;">  </h3>
         <h3 id="search_losses" style="color: white;"> </h3>
-
+        <!--
         <br>
         <h6 style="color: white; text-align: left;" > Specification </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
@@ -45,7 +45,8 @@
 
         <h6 style="color: white; text-align: left;" > Fight videos </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
-        <iframe src=""></iframe>
+        <iframe src=""></iframe> 
+    -->
 
     </div>
 
