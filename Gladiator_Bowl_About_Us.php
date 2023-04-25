@@ -30,5 +30,8 @@ li>
 	<h2>Sign up today</h2>
 	<p>If you are an MMA fighter or fan, we invite you to join our community and take advantage of all that Gladiator Bowl has to offer. Whether you are looking to grow your career or simply connect with others who share your passion for the sport, we have something for you. Sign up now and be a part of the future of MMA!</p>
 </div>
+    <?php
+    require_once "footer.php";
+    ?>
 </body>
 </html>

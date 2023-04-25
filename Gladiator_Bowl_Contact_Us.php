@@ -13,5 +13,8 @@
         <li>Phone: (555) 555-5555</li>
         <li>Address: 123 Main Street, Anytown, USA</li>
     </ul>
+    <?php
+    require_once "footer.php";
+    ?>
 </body>
 </html>

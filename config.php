@@ -15,8 +15,8 @@ function filterTable($query)
     $db_user = 'id20430866_grp16login';
     $db_password = '()^a12$1U1y3Fzqw';
     $connect = mysqli_connect($db_host, $db_user, $db_password,$db_name);
-    $filter_result = mysqli_query($connect, $query);
-    return $filter_result;
+    return mysqli_query($connect, $query);
 }
+
 ?>
 

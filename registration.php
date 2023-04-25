@@ -12,6 +12,10 @@ require_once('config.php');
 </head>
 
 <body>
+
+<?php
+require_once 'banner.php'
+?>
 <div>
     <?php
     if (isset($_POST["create"])) {
@@ -31,8 +35,8 @@ require_once('config.php');
         $number = preg_match('@[0-9]@', $password);
         $specialChars = preg_match('@[^\w]@', $password);
         if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8 || strlen($password) > 50) {
-            echo 'Password should be at least 8 - 50 characters in length and 
-    should include at least one upper case letter, one number, and one special character.';
+            echo "<div class='alert alert-danger'>Invalid Password. Please try again. Password requires an uppercase, lowercase, 
+               number and a special character.</div>";
         } else {
             if ($re_password == $password) {
                 $re_password = null;
@@ -72,16 +76,12 @@ require_once('config.php');
                         echo "<script>window.location.href='admin.php';</script>";
                 }
             } else {
-                echo "Passwords do not match!";
+                echo "<div class='alert alert-danger'>Passwords don't match!</div>";
             }
         }
 
     }
     ?>
-</div>
-
-<div class="logoBox">
-    <img class="logo" src="images/2023-03-20%20(1).png" alt="test logo">
 </div>
 <div>
     <form action="registration.php" method="post">
@@ -90,7 +90,7 @@ require_once('config.php');
                 <div class="col-5.5">
 
                     <h1>Registration</h1>
-                    <p>Please Enter Your Account Details</p>
+                    <p>Please Enter Your Account Details:</p>
                     <hr class="mb-2">
 
                     <label for="firstname"><b> First Name</b></label>
@@ -124,5 +124,8 @@ require_once('config.php');
         </div>
     </form>
 </div>
+<?php
+require_once 'footer.php';
+?>
 </body>
 </html>
