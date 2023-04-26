@@ -100,7 +100,6 @@ $user_link = reset($contact_profile_json);
         var message_ = document.querySelector('#message');
         var message = message_.value;
 
-
         const user_id = "<?php echo $user['user_id'] ?>";
         $.ajax({
             type: "POST",
@@ -140,7 +139,7 @@ $user_link = reset($contact_profile_json);
         });
 
 
-    }, 2000);
+    }, 1000);
 
 
     function switch_link(id_) {
@@ -170,6 +169,8 @@ $user_link = reset($contact_profile_json);
     }
 
     function switch_profile(id_) {
+        
+        var btn = document.querySelector('#btn_more2');
 
         user_link = tab[id_];
 
@@ -184,14 +185,17 @@ $user_link = reset($contact_profile_json);
             var search_wins = document.querySelector('#search_wins');
             var search_draws = document.querySelector('#search_draws');
             var search_losses = document.querySelector('#search_losses');
-            /*
+            
             var search_fighting_style = document.querySelector('#search_fighting_style');
             var search_gender = document.querySelector('#search_gender');
             var search_age = document.querySelector('#search_age');
             var search_weight = document.querySelector('#search_weight');
             var search_height = document.querySelector('#search_height');
-            var search_medical_history = document.querySelector('#search_medical_history');*/
+            var search_medical_history = document.querySelector('#search_medical_history');
+            show_more2.style.display = 'block';
         }
+        else
+            show_more2.style.display = 'none';
         
 
         var change_name = document.querySelector('#change_name');
@@ -205,16 +209,17 @@ $user_link = reset($contact_profile_json);
             search_description.innerHTML = user_link.description;
             
             if (user_link.have_profile == 1) {
-                search_wins.innerHTML = user_link.wins;
-                search_draws.innerHTML = user_link.draws;
-                search_losses.innerHTML = user_link.losses;
-                /*
+                
+                search_wins.innerHTML = "wins : " + user_link.wins;
+                search_draws.innerHTML = "draws : " + user_link.draws;
+                search_losses.innerHTML = "losses : " + user_link.losses;
+                
                 search_fighting_style.innerHTML = user_link.fighting_style;
                 search_gender.innerHTML = user_link.gender;
                 search_age.innerHTML = user_link.age;
                 search_weight.innerHTML = user_link.weight;
                 search_height.innerHTML = user_link.height;
-                search_medical_history.innerHTML = user_link.medical_history;*/
+                search_medical_history.innerHTML = user_link.medical_history;
             }
             
         }
@@ -263,7 +268,7 @@ $user_link = reset($contact_profile_json);
 
 <div id="main" class="row">
 
-    <div class="container_contact col-md-3 col-sm-3">
+    <div class="container_contact col-md-3 col-sm-3" style="height: auto; min-height: calc(100vh);">
         <h1 style="text-align: center;"> <i class="material-icons ">contacts</i> Contacts</h1>
         <div class="container_mini_profile">
 
@@ -308,7 +313,7 @@ $user_link = reset($contact_profile_json);
                     </div>
 
                     
-                    <div class="msger-chat" id="bottom"></div>
+                    <div class="msger-chat" id="bottom" style="height: 90%; width: 100%"></div>
 
 
                     <div class="msger-inputarea">
@@ -336,3 +341,5 @@ $user_link = reset($contact_profile_json);
 
 </div>
 </body>
+
+

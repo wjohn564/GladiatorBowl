@@ -1,6 +1,7 @@
 <?php // Var
 session_start();
 require_once "config.php";
+
 $user = $_SESSION['user'];
 $user_profile = $_SESSION['user_profile'];
 
@@ -66,6 +67,32 @@ while ($row = mysqli_fetch_array($contact_result)) {
     
 ?>
 
+<?php // get job of the user
+$prof = $user['user_type'];
+$user_id = $user['user_id'];
+
+$sql = "SELECT * FROM job_t WHERE applied_by = ?";
+$stmt = $pdo->prepare($sql);
+if (!$stmt->execute([$user_id])) {
+    echo "Error: " . $stmt->errorInfo()[2];
+    exit();
+}
+
+$user_job = $stmt->fetch();
+$user_job_publish_by = $user_job['publish_by'];
+$sql = "SELECT * FROM `user_t` WHERE user_id = '$user_job_publish_by'";
+$stmt = $pdo->prepare($sql);
+if (!$stmt->execute()) {
+    echo "Error: " . $stmt->errorInfo()[2];
+    exit();
+}
+
+$publisher = $stmt->fetch();
+$publisher_name = $publisher['first_name'] . " " . $publisher['last_name'];
+
+
+?>
+
 
 <script>
     var user_to_ban_id = null;
@@ -84,7 +111,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-    <link rel="stylesheet" href="Gladiator_Bowl_Home.css">
+    <link rel="stylesheet" href="css/Gladiator_Bowl_Home.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
     
@@ -103,15 +130,40 @@ while ($row = mysqli_fetch_array($contact_result)) {
         <div class="row" style="min-height: calc(90vh);">
             
         <div class="container_center col">
-            <a style="float: right;" href="<?php if ($user['user_type'] == "fighter") echo 'profile_fighter.php'; else echo 'profile_manager.php';?>">
+            <a style="float: right; margin: 6px;" href="<?php if ($user['user_type'] == "fighter") echo 'profile_fighter.php'; else echo 'profile_manager.php';?>">
                 <i class="material-icons ">edit</i> Edit profile</a>
 
             <?php require "full_profile.php"; ?>
 
         </div>
 
-        <div class="container_center col-md-6" style="background-color: #100d2b" >
-            <h1 style="color: white;">To complete here</h1>
+        <div class="col-md-6" style="background-color: #100d2b" >
+            
+            <?php if ($user_job): ?>
+
+                <div class="container_center2" style="text-align: center;">
+                    <h5> current job: </h5>
+                    <h4> <?php echo $user_job["title"] ?></h4>
+                    <hr>
+                    <br>
+                    <p> <?php echo $user_job["description"] ?></p>
+                    <p> Publisher name : <?php echo $publisher_name ?></p>
+                </div>
+
+            <?php endif; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
         
         <div class="container_center col"> 
@@ -172,9 +224,13 @@ while ($row = mysqli_fetch_array($contact_result)) {
                                     }
                                     $search_profile_result = filterTable($query);
                                     $user_profile_search = mysqli_fetch_array($search_profile_result);
+
                                     $row['have_profile'] = 0;
-                                    if ( count($user_profile_search) > 0) {
-                                        $row['have_profile'] = 1;
+                                    if ($user_profile_search) {
+                                        if ($row["user_type"] == "fighter")
+                                            $row['have_profile'] = 1;
+                                        if ($row["user_type"] == "manager")
+                                            $row['have_profile'] = 2;
                                         $user_profile_encode = json_encode($user_profile_search);
                                     }
                                     $row_encode = json_encode($row);
@@ -183,9 +239,9 @@ while ($row = mysqli_fetch_array($contact_result)) {
 
                                     var myUser = JSON.parse('<?php echo $row_encode; ?>');
 
-                                    var have_profile = '<?php echo ( count($user_profile_search) > 0); ?>';
+                                    var have_profile = '<?php echo $row['have_profile']; ?>';
 
-                                    if (have_profile)
+                                    if (have_profile > 0)
                                     {
                                         var myUserProfile = JSON.parse('<?php echo $user_profile_encode; ?>');
 
@@ -211,7 +267,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
                                                 <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="modify_contact(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">person_remove</i></button>
                                             <?php else: ?>
                                                 <button class="interaction-button"  type="button" id="<?php echo  $row["user_id"]?>" onclick="modify_contact(this.id)"><i class='material-icons ' onclick="change_sign_contact(this) ">group_add</i></button>
-                                                <?php endif; ?>
+                                            <?php endif; ?>
                                             <button class="interaction-button"  type="button" id="<?php echo  $size?>" onclick="switch_profile(this.id);" data-toggle="modal" data-target="#modal_profile"><i class='material-icons '>visibility</i></button>
                                             
                                         </td>
@@ -365,7 +421,7 @@ while ($row = mysqli_fetch_array($contact_result)) {
         var search_description = document.querySelector('#search_description');
 
 
-        if (tab[ind].have_profile) {
+        if (tab[ind].have_profile == 1) {
             var search_wins = document.querySelector('#search_wins');
             var search_draws = document.querySelector('#search_draws');
             var search_losses = document.querySelector('#search_losses');
@@ -380,19 +436,22 @@ while ($row = mysqli_fetch_array($contact_result)) {
 
         search_name.innerHTML = tab[ind].first_name + " " + tab[ind].last_name;
 
-        if (tab[ind].have_profile) {
+        if (tab[ind].have_profile > 0) {
             search_profile_picture.src = tab[ind].profile_picture_link;
             search_type.innerHTML = tab[ind].age + " | " + tab[ind].user_type;
             search_description.innerHTML = tab[ind].description;
-            search_wins.innerHTML = "wins : " . tab[ind].wins;
-            search_draws.innerHTML = "draws : " . tab[ind].draws;
-            search_losses.innerHTML = "losses : " . tab[ind].losses;
-            search_fighting_style.innerHTML = "fighting style : " . tab[ind].fighting_style;
-            search_gender.innerHTML = "gender : " . tab[ind].gender;
-            search_age.innerHTML = "age : " . tab[ind].age;
-            search_weight.innerHTML = "weight : " . tab[ind].weight;
-            search_height.innerHTML = "height : " . tab[ind].height;
-            search_medical_history.innerHTML = tab[ind].medical_history;
+            
+            if (tab[ind].have_profile == 1) {
+                search_wins.innerHTML = "wins : " + tab[ind].wins;
+                search_draws.innerHTML = "draws : " + tab[ind].draws;
+                search_losses.innerHTML = "losses : " + tab[ind].losses;
+                search_fighting_style.innerHTML = "fighting style : " + tab[ind].fighting_style;
+                search_gender.innerHTML = "gender : " + tab[ind].gender;
+                search_age.innerHTML = "age : " + tab[ind].age;
+                search_weight.innerHTML = "weight : " + tab[ind].weight;
+                search_height.innerHTML = "height : " + tab[ind].height;
+                search_medical_history.innerHTML = tab[ind].medical_history;
+            }
         }
         else {
             search_type.innerHTML = tab[ind].user_type;

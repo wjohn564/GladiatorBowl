@@ -9,6 +9,9 @@
     text-align: center;
 }
 
+body {
+    background-image: url("https://www.definewireless.com/wp-content/uploads/2018/04/mma-background-9.jpg");
+}
 
 .submit-button {
     background-color: lightskyblue;

@@ -1,6 +1,11 @@
 <?php
+session_start();
+$user = $_SESSION['user'];
+$prof =  $user['user_type'];
+$user_id = $user['user_id'];
 require_once "config.php";
 require_once "session.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -13,20 +18,30 @@ require_once "session.php";
 <body>
 <?php
 require_once "banner.php";
+?>
+<?php
+
+
 if (isset($_POST["post_job"])) {
     $job_title = $_POST['job_title'];
     $job_description = $_POST['job_description'];
+    if ($user["user_type"] == "fighter")
+        $job_need = "manager";
+    if ($user["user_type"] == "manager")
+        $job_need = "fighter";
+    
 
     // create insert
-    $sql = "INSERT INTO job_t (title, description) VALUES (?, ?)";
+    $sql = "INSERT INTO job_t (title, description, publish_by, job_need) VALUES (?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
 
-    if (!$stmt->execute([$job_title, $job_description])) {
+    if (!$stmt->execute([$job_title, $job_description, $user_id, $job_need])) {
         echo "Error: " . $stmt->errorInfo()[2];
         exit();
     }
 
     echo "Job inserted into DB successfully" . $job_title;
+    
 
 }
 ?>
@@ -37,6 +52,7 @@ if (isset($_POST["post_job"])) {
         <div class="container">
             <div class="row">
                 <div class="col-5.5">
+                    <h1 id="test"></h1>
                     <h1>Post Your Job Here</h1>
                     <hr class="mb-2">
 

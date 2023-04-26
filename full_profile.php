@@ -2,21 +2,13 @@
 session_start();
 
 ?>
-<script>
-    function show_more() {
-        var show_more = document.querySelector('#show_more');
-        if (show_more.style.display === 'block')
-            show_more.style.display = 'none';
-        else
-            show_more.style.display = 'block';
-    }
-        
-</script>
+
 
 <br><br>
+<link rel="stylesheet" href="css/full_profile_search.css">
 <img class="profile_picture" src="<?php echo $user_profile['profile_picture_link']?>"
      onerror="this.onerror=null; this.src='https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png';">
-<br><br><br><br>
+<br><br>
 <h2 style="color: white;"> <?php echo $user['first_name'] . '  ' . $user['last_name']?> </h2>
 <h3 style="color: #0b5ed7 "> <?php echo $user_profile['age'] . ' | ' . $user['user_type']?> </h3>
 <hr style="color: grey"><br>
@@ -25,7 +17,7 @@ session_start();
 
 <br>
 
-<div id="show_more" style="display = 'none';">
+<div id="show_more">
     <?php
     if ($user['user_type'] == "fighter"): ?>
         <h6 style="color: white; text-align: left;" > Fight result</h6>
@@ -57,6 +49,26 @@ session_start();
 
     <?php endif; ?>
 </div>
+<?php if ($user['user_type'] == "fighter"): ?>
+    <input type="button" onclick="show_more(this);" value="More">
+<?php endif ?>
 
-<input type="button" onclick="show_more();" value="More">
+<script>
+    var show_more = document.querySelector('#show_more');
+    show_more.style.display = 'none';
+</script>
 
+<script>
+    function show_more(btn) {
+        var show_more = document.querySelector('#show_more');
+        if (show_more.style.display === 'block') {
+            show_more.style.display = 'none';
+            btn.value = "More";
+        }
+        else {
+            show_more.style.display = 'block';
+            btn.value = "Less";
+        }
+    }
+        
+</script>

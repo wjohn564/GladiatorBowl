@@ -62,7 +62,6 @@ background: #555;
     border-radius: 0px;
     background-color: #100d2b;
     color: white;
-    height: calc(100vh);
     overflow: clip;
 }
 
@@ -181,6 +180,7 @@ html {
     border-radius: 5px;
     background: var(--msger-bg);
     box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+    background-color: #1a144a;
 
 
 }

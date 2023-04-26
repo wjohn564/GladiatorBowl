@@ -130,3 +130,27 @@ select {
     border-radius: 0px;
     background-color: #100d2b;
 }
+
+.container_center2 {
+    border: 1px solid black;
+    border-radius: 0px;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 10px;
+    background-color: #1f1768;
+    color: aliceblue;
+}
+
+.job-card {
+    width: 200px;
+    height: 200px;
+    background-color: #100d2c;
+    color: white;
+    overflow: auto;
+}
+
+.job {
+    color: white;
+    padding: 10px;
+    border-bottom: 1px solid black;
+}

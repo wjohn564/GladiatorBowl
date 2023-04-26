@@ -1,11 +1,10 @@
+<?php
+session_start();
+?>
 
-<style>
-    .show_more2 {
-        display: none;
-    }
-</style>
 
-<link rel="stylesheet" href="full_profile_search.css">
+
+<link rel="stylesheet" href="css/full_profile_search.css">
 <body class="general_full_profile">
 
     <br>
@@ -21,12 +20,15 @@
     <br>
 
     <div id="show_more2">
+        
+            
         <h6 style="color: white; text-align: left;" > Fight result</h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
         <h3 id="search_wins" style="color: white;"> </h3>
         <h3 id="search_draws" style="color: white;">  </h3>
         <h3 id="search_losses" style="color: white;"> </h3>
-        <!--
+        
+        
         <br>
         <h6 style="color: white; text-align: left;" > Specification </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
@@ -46,27 +48,16 @@
         <h6 style="color: white; text-align: left;" > Fight videos </h6>
         <hr style="color: #a8a8a8 ; height: 3px; background-color: #a8a8a8;" ><br>
         <iframe src=""></iframe> 
-    -->
+        
 
     </div>
 
 
-    <input type="button" value="More" onclick="show_more2()" id="btn_more2">
-
     <script>
-        function show_more2() {
-            var btn = document.querySelector('#btn_more2');
-            var show_more2 = document.querySelector('#show_more2');
-            if (show_more2.style.display === 'block') {
-                show_more2.style.display = 'none';
-                btn.value = "More";
-            }
-            else {
-                show_more2.style.display = 'block';
-                btn.value = "Less";
-            }
-        }
-        
+        var show_more2 = document.querySelector('#show_more2');
+        show_more2.style.display = 'none';
     </script>
+
+    
 
 </body>
