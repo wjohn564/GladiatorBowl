@@ -91,6 +91,21 @@ $publisher = $stmt->fetch();
 $publisher_name = $publisher['first_name'] . " " . $publisher['last_name'];
 
 
+//get other job
+
+if ($prof == 'manager') {
+    $query = "SELECT * FROM job_t WHERE job_need = 'manager' AND applied_by IS Null";
+}
+
+if ($prof == 'fighter') {
+    $query = "SELECT * FROM job_t WHERE job_need = 'fighter' AND applied_by IS NULL";
+}
+
+$search_job_result = filterTable($query);
+
+
+
+
 ?>
 
 
@@ -138,29 +153,50 @@ $publisher_name = $publisher['first_name'] . " " . $publisher['last_name'];
         </div>
 
         <div class="col-md-6" style="background-color: #100d2b" >
-            
-            <?php if ($user_job): ?>
+            <br>
 
+            <?php if ($user_job): ?>
+                <h3 style="color: #0b5ed7 ">Current job </h3>
                 <div class="container_center2" style="text-align: center;">
-                    <h5> current job: </h5>
+                    <h5> Job title: </h5>
                     <h4> <?php echo $user_job["title"] ?></h4>
                     <hr>
                     <br>
                     <p> <?php echo $user_job["description"] ?></p>
                     <p> Publisher name : <?php echo $publisher_name ?></p>
                 </div>
+                <br><br><br>
 
             <?php endif; ?>
 
+            
+            <h3 style="color: #0b5ed7 ">Jobs that may interest you </h3>
 
 
+            <?php while ($row = mysqli_fetch_array($search_job_result)): 
+                
+                $user_job_publish_by = $row['publish_by'];
+                $sql = "SELECT * FROM `user_t` WHERE user_id = '$user_job_publish_by'";
+                $stmt = $pdo->prepare($sql);
+                if (!$stmt->execute()) {
+                    echo "Error: " . $stmt->errorInfo()[2];
+                    exit();
+                }
 
-
-
-
-
-
-
+                $publisher = $stmt->fetch();
+                $publisher_name = $publisher['first_name'] . " " . $publisher['last_name'];
+                                
+                
+                ?>
+                <div class="container_center2" style="text-align: center;">
+                    <h6> Job title: </h6>
+                    <h4> <?php echo $row["title"] ?></h4>
+                    <hr>
+                    <br>
+                    <p> <?php echo $row["description"] ?></p>
+                    <p> Publisher name : <?php echo $publisher_name ?></p>
+                </div>
+            <?php endwhile; ?>
 
 
 
