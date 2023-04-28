@@ -95,38 +95,59 @@ if ($prof == 'fighter') {
     <button type="submit">Search</button>
 </form>
 
-<?php
 
-if ($user_job) {
 
-    echo '<div class="job-card" style="text-align: center;">';
-    echo 'current job: ';
-    echo '<h4>' . $user_job["title"] . '</h4>';
-    echo '<br>';
-    echo '<p>' . $user_job["description"] . '</p>';
-    echo '<form method="post">';
-    echo '<button type="submit" name="resign">Resign</button>';
-    echo '</form>';
-    echo '</div>';
-}
-?>
+<?php if ($user_job): ?>
+    <h3 style="color: #0b5ed7; text-align: center;">Current job </h3>
+    <div class="container_center2" style="text-align: center; margin: auto;">
+        <h5> Job title: </h5>
+        <h4> <?php echo $user_job["title"] ?></h4>
+        <hr>
+        
+        <h6> <?php echo $user_job["description"] ?></h6>
+        <h6> Publisher name : <?php echo $publisher_name ?></h6>
+        <form method="post">
+        <button type="submit" name="resign" class="submit-button">Resign</button>
+        </form>
+    </div>
+    <br><br><br>
+
+<?php endif; ?>
 
 <?php
 $search_job_result = filterTable($query);
 
 
-while ($row = mysqli_fetch_array($search_job_result)) {
-    echo '<div class="card">';
-    echo '<h2>' . htmlspecialchars($row['title']) . '</h2>';
-    echo '<p>' . htmlspecialchars($row['description']) . '</p>';
-    echo '<form method="post">';
-    echo '<input type="hidden" name="job_title" value="' . htmlspecialchars($row['title']) . '">';
-    echo '<input type="hidden" name="job_description" value="' . htmlspecialchars($row['description']) . '">';
-    echo '<button type="submit" name="apply_job">Apply</button>';
-    echo '</form>';
-    echo '</div>';
-}
 ?>
+<h3 style="color: #0b5ed7; text-align: center;">Jobs that may interest you </h3>
+<?php while ($row = mysqli_fetch_array($search_job_result)): 
+                
+    $user_job_publish_by = $row['publish_by'];
+    $sql = "SELECT * FROM `user_t` WHERE user_id = '$user_job_publish_by'";
+    $stmt = $pdo->prepare($sql);
+    if (!$stmt->execute()) {
+        echo "Error: " . $stmt->errorInfo()[2];
+        exit();
+    }
+
+    $publisher = $stmt->fetch();
+    $publisher_name2 = $publisher['first_name'] . " " . $publisher['last_name'];
+                    
+    
+    ?>
+    <div class="container_center2" style="text-align: center; margin: auto;">
+        <h6> Job title: </h6>
+        <h4> <?php echo $row["title"] ?></h4>
+        <hr>
+        
+        <h6> <?php echo $row["description"] ?></h6>
+        <h6> Publisher name : <?php echo $publisher_name2 ?></h6>
+        <form method="post">
+        <button type="submit" name="apply_job" class="submit-button">Apply</button>
+        </form>
+    </div>
+    <br><br>
+<?php endwhile; ?>
 
 </body>
 <?php

@@ -73,7 +73,7 @@ require_once 'banner.php'
                         echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
                         break;
                     default:
-                        echo "<script>window.location.href='admin.php';</script>";
+                        echo "<script>window.location.href='Gladiator_Bowl_Home.php';</script>";
                 }
             } else {
                 echo "<div class='alert alert-danger'>Passwords don't match!</div>";
